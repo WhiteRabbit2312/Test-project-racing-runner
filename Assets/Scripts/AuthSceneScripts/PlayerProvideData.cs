@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PlayerRegistrationData : MonoBehaviour
+public class PlayerProvideData : MonoBehaviour
 {
     [SerializeField] private TMP_InputField _loginInputField;
     [SerializeField] private TMP_InputField _passwordInputField;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Firebase.Auth;
 
-public class SignUpButton : MonoBehaviour
+public class LogInButton : MonoBehaviour
 {
     [SerializeField] private PlayerProvideData _playerRegistrationData;
     private string _login;
@@ -13,36 +13,29 @@ public class SignUpButton : MonoBehaviour
     private void Awake()
     {
         Button button = GetComponent<Button>();
-        button.onClick.AddListener(ProvideSignUp);
+        button.onClick.AddListener(ProvideLogIn);
     }
 
-
-    private void ProvideSignUp()
+    private void ProvideLogIn()
     {
         FirebaseAuth auth = RegistrationManager.Instance.Auth;
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
 
-        Debug.Log("login: " + _login);
-        Debug.Log("password: " + _password);
-        Debug.Log("auth: " + auth);
-
-
-        auth.CreateUserWithEmailAndPasswordAsync(_login, _password).ContinueWith(task => {
+        auth.SignInWithEmailAndPasswordAsync(_login, _password).ContinueWith(task => {
             if (task.IsCanceled)
             {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
+                Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
                 return;
             }
             if (task.IsFaulted)
             {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
 
-            // Firebase user has been created.
             Firebase.Auth.AuthResult result = task.Result;
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
+            Debug.LogFormat("User signed in successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
         });
     }

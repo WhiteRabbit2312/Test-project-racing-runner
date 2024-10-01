@@ -1653,6 +1653,7 @@ GameObject:
   - component: {fileID: 884119983}
   - component: {fileID: 884119982}
   - component: {fileID: 884119981}
+  - component: {fileID: 884119984}
   m_Layer: 5
   m_Name: LogInButton
   m_TagString: Untagged
@@ -1762,6 +1763,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 884119979}
   m_CullTransparentMesh: 1
+--- !u!114 &884119984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884119979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591d5812a1a526a4fad9faeb2c4c359f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerRegistrationData: {fileID: 1136163416}
 --- !u!1 &913930088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1849,8 +1863,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -2403,13 +2417,14 @@ GameObject:
   - component: {fileID: 1136163412}
   - component: {fileID: 1136163411}
   - component: {fileID: 1136163415}
+  - component: {fileID: 1136163416}
   m_Layer: 5
   m_Name: AuthorizationCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1136163411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2508,6 +2523,20 @@ MonoBehaviour:
   _switchButton: {fileID: 113746279}
   _switchToThisPanel: {fileID: 2055892908}
   _switchFromThisPanel: {fileID: 1136163410}
+--- !u!114 &1136163416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136163410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac1db2eab88e2448a853124e1ac5396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _loginInputField: {fileID: 1016486723}
+  _passwordInputField: {fileID: 1668661435}
 --- !u!1 &1318622068
 GameObject:
   m_ObjectHideFlags: 0
@@ -3070,8 +3099,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -4070,8 +4099,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -4851,7 +4880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2055892909
 MonoBehaviour:
   m_ObjectHideFlags: 0
