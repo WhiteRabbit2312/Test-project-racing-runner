@@ -7,6 +7,7 @@ using Firebase.Auth;
 public class LogInButton : MonoBehaviour
 {
     [SerializeField] private PlayerProvideData _playerRegistrationData;
+    [SerializeField] private WarningPanel _warningCanvas;
     private string _login;
     private string _password;
 
@@ -31,6 +32,7 @@ public class LogInButton : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                _warningCanvas.ShowWarning(WarningTypes.WrongPassword);
                 return;
             }
 

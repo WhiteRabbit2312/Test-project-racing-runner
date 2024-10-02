@@ -7,6 +7,7 @@ using Firebase.Auth;
 public class SignUpButton : MonoBehaviour
 {
     [SerializeField] private PlayerProvideData _playerRegistrationData;
+    [SerializeField] private CheckRegistrationData _checkRegistrationData;
     private string _login;
     private string _password;
 
@@ -16,8 +17,12 @@ public class SignUpButton : MonoBehaviour
         button.onClick.AddListener(ProvideSignUp);
     }
 
-
     private void ProvideSignUp()
+    {
+        StartCoroutine(ProvideSignUpCoroutine());
+    }
+
+    private IEnumerator ProvideSignUpCoroutine()
     {
         FirebaseAuth auth = RegistrationManager.Instance.Auth;
         _login = _playerRegistrationData.Login;
@@ -27,23 +32,46 @@ public class SignUpButton : MonoBehaviour
         Debug.Log("password: " + _password);
         Debug.Log("auth: " + auth);
 
+        bool confirmed = true;
+        var registerTask = auth.CreateUserWithEmailAndPasswordAsync(_login, _password).ContinueWith(task =>
+        {
+            if (!_checkRegistrationData.Check())
+            {
+                confirmed = false;
 
-        auth.CreateUserWithEmailAndPasswordAsync(_login, _password).ContinueWith(task => {
+                Debug.LogError("Did not confirm");
+                return;
+            }
+
             if (task.IsCanceled)
             {
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
+                confirmed = false;
+
                 return;
             }
             if (task.IsFaulted)
             {
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                confirmed = false;
                 return;
             }
 
-            // Firebase user has been created.
             Firebase.Auth.AuthResult result = task.Result;
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
+
         });
+
+        yield return new WaitUntil(predicate: () => registerTask.IsCompleted);
+
+        if (confirmed)
+        {
+            Debug.Log("Confirmed");
+
+            _checkRegistrationData.ConfirmPlayerData();
+        }
+
+
     }
 }

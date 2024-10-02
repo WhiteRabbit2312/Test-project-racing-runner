@@ -5,16 +5,28 @@ using Firebase.Auth;
 
 public class RegistrationManager : MonoBehaviour
 {
-    public static RegistrationManager Instance;
-    public FirebaseAuth Auth;
+    private static RegistrationManager _instance;
+
+    public static RegistrationManager Instance
+    {
+        get { return _instance; }
+    }
+
+    public FirebaseAuth _auth;
+
+    public FirebaseAuth Auth
+    {
+        get { return _auth; }
+    }
 
     private void Awake()
     {
-        if (Instance == null)
+
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
         }
 
-        Auth = FirebaseAuth.DefaultInstance;
+        _auth = FirebaseAuth.DefaultInstance;
     }
 }

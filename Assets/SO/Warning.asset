@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 571d88ff95d85a644a56fe6cc4fb6a06, type: 3}
   m_Name: Warning
   m_EditorClassIdentifier: 
-  WrongPassword: Wrong password!
-  EnterLogin: Please, enter login
-  EnterPassword: Please, enter password
-  ConfirmPassword: Please, confirm password
-  EnterName: Please, enterName
-  NameExist: Name is already exists
-  PasswordMoreSymbols: Password should be more than 6 symbols
+  WarningText:
+  - Wrong password!
+  - Please, enter login
+  - Please, enter password
+  - Please, confirm password
+  - Please, enterName
+  - Name is already exists
+  - Password should be more than 6 symbols
+  - Incorrect login
