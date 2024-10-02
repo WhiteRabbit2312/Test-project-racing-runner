@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Firebase.Auth;
+using UnityEngine.SceneManagement;
 
 public class SignUpButton : MonoBehaviour
 {
@@ -35,13 +36,7 @@ public class SignUpButton : MonoBehaviour
         bool confirmed = true;
         var registerTask = auth.CreateUserWithEmailAndPasswordAsync(_login, _password).ContinueWith(task =>
         {
-            if (!_checkRegistrationData.Check())
-            {
-                confirmed = false;
-
-                Debug.LogError("Did not confirm");
-                return;
-            }
+            
 
             if (task.IsCanceled)
             {
@@ -54,6 +49,14 @@ public class SignUpButton : MonoBehaviour
             {
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 confirmed = false;
+                return;
+            }
+
+            if (!_checkRegistrationData.Check())
+            {
+                confirmed = false;
+
+                Debug.LogError("Did not confirm");
                 return;
             }
 
@@ -70,6 +73,8 @@ public class SignUpButton : MonoBehaviour
             Debug.Log("Confirmed");
 
             _checkRegistrationData.ConfirmPlayerData();
+            SceneManager.LoadScene(Constants.MainMenuSceneIdx);
+
         }
 
 
