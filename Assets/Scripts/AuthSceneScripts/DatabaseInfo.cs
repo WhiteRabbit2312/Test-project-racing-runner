@@ -76,42 +76,23 @@ public class DatabaseInfo : MonoBehaviour
         return playerList;*/
     }
 
-    public async Task<int> GetAvatarID()
+    public async Task<string> GetPlayerData(string key)
     {
         var snapshot = await DatabaseManager.Instance.DatabaseRef
             .Child(Constants.DatabaseUserKey)
             .Child(DatabaseManager.Instance.FirebaseUser.UserId)
-            .Child(Constants.DatabaseAvatarKey)
+            .Child(key)
             .GetValueAsync();
 
         if (snapshot.Exists)
         {
-            string avatarId = snapshot.Value.ToString();
-            return int.Parse(avatarId);
+            string data = snapshot.Value.ToString();
+            return data;
         }
         else
         {
-            Debug.LogError("Аватар не найден.");
-            return -1;
+            return null;
         }
-
-        /*
-        DatabaseManager.Instance.DatabaseRef.Child(Constants.DatabaseUserKey)
-            .Child(DatabaseManager.Instance.FirebaseUser.UserId)
-            .Child(Constants.DatabaseAvatarKey)
-            .GetValueAsync()
-            .ContinueWithOnMainThread(task => {
-
-            if (task.IsCompleted && task.Result.Exists)
-            {
-                string avatarId = task.Result.Value.ToString();
-                int selectedAvatarIndex = int.Parse(avatarId);
-            }
-            else
-            {
-                Debug.LogError("Ошибка при загрузке аватара или аватар не найден");
-            }
-        });*/
     }
 
     /*

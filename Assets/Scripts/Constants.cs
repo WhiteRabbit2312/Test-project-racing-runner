@@ -13,6 +13,7 @@ public class Constants
     public const int MinPasswordSymbols = 6;
     public const int MainMenuSceneIdx = 1;
     public const int PlayersInLeaderboardCount = 5;
+    public const int DefaultValue = -1;
 
     public const string LoginPattern = @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
   + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."

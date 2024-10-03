@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class AvatarPanel : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _playerText;
+    [SerializeField] private TMP_InputField _nameInputField;
     [SerializeField] private Image _playerAvatar;
     [SerializeField] private AvatarSpriteSO _avatarSpriteSO;
     [SerializeField] private DatabaseInfo _databaseInfo;
@@ -19,8 +22,12 @@ public class AvatarPanel : MonoBehaviour
         _openAvatarButton.onClick.AddListener(OpenPanel);
         _closeButton.onClick.AddListener(GetAvatar);
         _closeButton.onClick.AddListener(ClosePanel);
+        _closeButton.onClick.AddListener(GetName);
+
+        _nameInputField.onValueChanged.AddListener(SetName);
 
         GetAvatar();
+        GetName();
     }
 
     public void SetAvatar(int id)
@@ -30,9 +37,25 @@ public class AvatarPanel : MonoBehaviour
 
     private async void GetAvatar()
     {
-        int avatarId = await _databaseInfo.GetAvatarID();
+        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey);
+        int avatarId = int.Parse(value);
 
         _playerAvatar.sprite = _avatarSpriteSO.SpriteAvatar[avatarId];
+    }
+
+    private void SetName(string name)
+    {
+        if (!string.IsNullOrEmpty(name))
+        {
+            _databaseInfo.SetData(Constants.DatabaseNameKey, name);
+
+        }
+    }
+
+    private async void GetName()
+    {
+        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey);
+        _playerText.text = value;
     }
 
     private void OpenPanel()
