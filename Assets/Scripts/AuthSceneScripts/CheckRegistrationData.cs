@@ -53,8 +53,6 @@ public class CheckRegistrationData : MonoBehaviour
 
     private bool IsPasswordConfirmed()
     {
-        Debug.Log("2");
-
         if (_passwordInputField.text == _confirmPasswordInputField.text)
         {
             return true;

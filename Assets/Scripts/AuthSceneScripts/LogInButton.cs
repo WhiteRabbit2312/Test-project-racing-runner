@@ -23,12 +23,9 @@ public class LogInButton : MonoBehaviour
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
 
-        bool confirmed = false;
-
         auth.SignInWithEmailAndPasswordAsync(_login, _password).ContinueWith(task => {
             if (task.IsCanceled)
             {
-
                 Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
                 return;
             }
@@ -37,17 +34,12 @@ public class LogInButton : MonoBehaviour
                 Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
-            confirmed = true;
             Firebase.Auth.AuthResult result = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
         });
 
-        if (!confirmed)
-        {
-            Debug.Log("###");
-            _warningPanel.ShowWarning(WarningTypes.WrongPassword);
-        }
+      
 
     }
 }

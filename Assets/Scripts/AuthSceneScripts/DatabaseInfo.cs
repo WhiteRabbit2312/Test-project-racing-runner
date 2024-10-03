@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
 using Firebase.Database;
-using Firebase.Extensions;
-using System;
+using System.Threading.Tasks;
 
 public class DatabaseInfo : MonoBehaviour
 {
@@ -15,6 +14,35 @@ public class DatabaseInfo : MonoBehaviour
             .Child(DatabaseManager.Instance.CreateUser().UserId)
             .Child(key)
             .SetValueAsync(data);
+    }
+
+    public async Task<List<PlayerData>> GetSortedScoresAsync()
+    {
+        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(Constants.DatabaseUserKey);
+
+        List<PlayerData> playerList = new List<PlayerData>();
+
+        var task = await databaseReference
+            .OrderByChild(Constants.DatabaseScoreKey)
+            .GetValueAsync();
+
+        if (task.Exists)
+        {
+            DataSnapshot snapshot = task;
+
+            foreach (DataSnapshot playerSnapshot in snapshot.Children)
+            {
+                string playerName = playerSnapshot.Child(Constants.DatabaseNameKey).Value.ToString();
+                int score = int.Parse(playerSnapshot.Child(Constants.DatabaseScoreKey).Value.ToString());
+
+                PlayerData player = new PlayerData(playerName, score);
+                playerList.Add(player);
+            }
+
+            playerList.Sort((p1, p2) => p2.Score.CompareTo(p1.Score));
+        }
+
+        return playerList;
     }
 
     /*
@@ -44,15 +72,46 @@ public class DatabaseInfo : MonoBehaviour
 
     }*/
 
-    
-    public void GetUserHighscore(string key, Action<object> onComplete)
+
+    /*
+    private void GetSortedScores(Action<List<PlayerData>> OnComplete)
     {
-        StartCoroutine(GetUserDataCoroutine(key, onComplete));
-    }
-    
-    private IEnumerator GetUserDataCoroutine(string key, Action<object> onComplete)
+        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(Constants.DatabaseUserKey);
+
+
+        databaseReference
+            .OrderByChild(Constants.DatabaseScoreKey) 
+            .GetValueAsync().ContinueWith(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    List<PlayerData> playerList = new List<PlayerData>();
+
+                    foreach (DataSnapshot playerSnapshot in snapshot.Children)
+                    {
+                        string playerName = playerSnapshot.Child(Constants.DatabaseNameKey).Value.ToString();
+                        int score = int.Parse(playerSnapshot.Child(Constants.DatabaseScoreKey).Value.ToString());
+
+                        PlayerData player = new PlayerData(playerName, score);
+                        playerList.Add(player);
+                    }
+
+                    playerList.Sort((p1, p2) => p2.Score.CompareTo(p1.Score));
+
+                    OnComplete?.Invoke(playerList);
+
+                    foreach (var player in playerList)
+                    {
+                        Debug.Log("Player: " + player.Name + " - Score: " + player.Score);
+                    }
+                }
+            });
+    }*/
+
+    /*
+    private IEnumerator GetUserDataCoroutine()
     {
-        var task = DatabaseManager.Instance.DatabaseRef.Child(Constants.DatabaseUserKey).GetValueAsync();
 
         yield return new WaitUntil(() => task.IsCompleted);
 
@@ -64,22 +123,16 @@ public class DatabaseInfo : MonoBehaviour
         {
             DataSnapshot snapshot = task.Result;
 
-            if (snapshot.HasChild(key))
+            foreach (var item in snapshot.Children)
             {
-                DataSnapshot mySnapshot = snapshot.Child(key);
+                PlayerData playerData = new PlayerData();
 
-                if (mySnapshot.Value != null)
-                {
-                    var score = snapshot.Value;
-                    onComplete?.Invoke(score);
+                playerData.Name = item.Child(Constants.DatabaseNameKey).Value.ToString();
+                playerData.Score = (int)item.Child(Constants.DatabaseScoreKey).Value;
+                playerData.AvatarId = (int)item.Child(Constants.DatabaseScoreKey).Value;
 
 
-                }
-                else
-                {
-                    onComplete?.Invoke(null);  // Или значение по умолчанию
-                }
             }
         }
-    }
+    }*/
 }
