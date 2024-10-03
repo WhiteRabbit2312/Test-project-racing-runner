@@ -15,6 +15,8 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private Button _closeLeaderboardButton;
 
     private List<GameObject> _spawnedPlayers = new List<GameObject>();
+    private readonly Color _userColorInLeaderboard = new Color(1, 0.93f, 0.05f);
+    
 
     private void Awake()
     {
@@ -25,26 +27,37 @@ public class Leaderboard : MonoBehaviour
     private async void UpdatePlayerData()
     {
         _leaderboardCanvas.SetActive(true);
-        List<PlayerData> sortedPlayers = await _databaseInfo.GetSortedScoresAsync();
+        Dictionary<string, PlayerData> sortedPlayers = await _databaseInfo.GetSortedScoresAsync();
         SpawnList(sortedPlayers);
     }
 
-    private void SpawnList(List<PlayerData> sortedPlayers)
+    private void SpawnList(Dictionary<string, PlayerData> sortedPlayers)
     {
-        int playersInLeaderboard;
-
-        if (sortedPlayers.Count < Constants.PlayersInLeaderboardCount)
-        {
-            playersInLeaderboard = sortedPlayers.Count;
-        }
-
-        else
-        {
-            playersInLeaderboard = Constants.PlayersInLeaderboardCount;
-        }
-
         int place = 1;
 
+        foreach(var item in sortedPlayers)
+        {
+            if (place <= Constants.PlayersInLeaderboardCount || DatabaseManager.Instance.FirebaseUser.UserId == item.Key)
+            {
+                GameObject playerObject = Instantiate(_boardCellTemplate, _spawnPoint);
+                _spawnedPlayers.Add(playerObject);
+
+                TemplateData templateData = playerObject.GetComponent<TemplateData>();
+                if (templateData != null)
+                {
+                    templateData.SetData(place, item.Value.Name, item.Value.Score);
+
+                    if (DatabaseManager.Instance.FirebaseUser.UserId == item.Key)
+                    {
+                        templateData.SetColor(_userColorInLeaderboard);
+                    }
+
+                }
+            }
+            place++;
+        }
+
+        /*
         for (int i = 0; i < playersInLeaderboard; i++)
         {
             GameObject playerObject = Instantiate(_boardCellTemplate, _spawnPoint);
@@ -56,9 +69,7 @@ public class Leaderboard : MonoBehaviour
                 templateData.SetData(place, sortedPlayers[i].Name, sortedPlayers[i].Score);
             }
             place++;
-        }
-
-
+        }*/
     }
 
     private void CloseLeaderBoard()

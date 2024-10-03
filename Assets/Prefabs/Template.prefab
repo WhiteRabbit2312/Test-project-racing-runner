@@ -496,3 +496,4 @@ MonoBehaviour:
   _playerPlaceText: {fileID: 3764479184200190807}
   _playerNameText: {fileID: 627320533468577583}
   _playerScoreText: {fileID: 6134656864037217726}
+  _playerImg: {fileID: 186518040924797023}

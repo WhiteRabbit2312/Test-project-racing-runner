@@ -25,6 +25,7 @@ public class CheckRegistrationData : MonoBehaviour
 
     public void ConfirmPlayerData()
     {
+        DatabaseManager.Instance.CreateUser();
         _databaseInfo.SetData(Constants.DatabaseNameKey, _nameInputField.text);
         _databaseInfo.SetData(Constants.DatabaseAvatarKey, 0);
         _databaseInfo.SetData(Constants.DatabaseScoreKey, 0);

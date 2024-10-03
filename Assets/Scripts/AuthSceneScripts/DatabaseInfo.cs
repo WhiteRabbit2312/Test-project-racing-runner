@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Firebase;
+using System;
 using Firebase.Database;
 using System.Threading.Tasks;
+using System.Linq;
+using Firebase.Extensions;
 
 public class DatabaseInfo : MonoBehaviour
 {
@@ -11,14 +13,16 @@ public class DatabaseInfo : MonoBehaviour
     {
         DatabaseManager.Instance.DatabaseRef
             .Child(Constants.DatabaseUserKey)
-            .Child(DatabaseManager.Instance.CreateUser().UserId)
+            .Child(DatabaseManager.Instance.FirebaseUser.UserId)
             .Child(key)
             .SetValueAsync(data);
     }
 
-    public async Task<List<PlayerData>> GetSortedScoresAsync()
+    public async Task<Dictionary<string, PlayerData>> GetSortedScoresAsync()
     {
         DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(Constants.DatabaseUserKey);
+
+        Dictionary<string, PlayerData> playerDictionary = new Dictionary<string, PlayerData>();
 
         List<PlayerData> playerList = new List<PlayerData>();
 
@@ -26,7 +30,31 @@ public class DatabaseInfo : MonoBehaviour
             .OrderByChild(Constants.DatabaseScoreKey)
             .GetValueAsync();
 
+
         if (task.Exists)
+        {
+            DataSnapshot snapshot = task;
+
+            foreach (DataSnapshot playerSnapshot in snapshot.Children)
+            {
+                string playerId = playerSnapshot.Key;
+
+                string playerName = playerSnapshot.Child(Constants.DatabaseNameKey).Value.ToString();
+                int score = int.Parse(playerSnapshot.Child(Constants.DatabaseScoreKey).Value.ToString());
+
+                PlayerData player = new PlayerData(playerName, score);
+
+                playerDictionary.Add(playerId, player);
+            }
+            
+            playerDictionary = playerDictionary
+                .OrderByDescending(p => p.Value.Score)  
+                .ToDictionary(pair => pair.Key, pair => pair.Value); 
+        }
+
+        return playerDictionary;
+
+        /*if (task.Exists)
         {
             DataSnapshot snapshot = task;
 
@@ -37,12 +65,53 @@ public class DatabaseInfo : MonoBehaviour
 
                 PlayerData player = new PlayerData(playerName, score);
                 playerList.Add(player);
+
+                
             }
 
             playerList.Sort((p1, p2) => p2.Score.CompareTo(p1.Score));
+            
         }
 
-        return playerList;
+        return playerList;*/
+    }
+
+    public async Task<int> GetAvatarID()
+    {
+        var snapshot = await DatabaseManager.Instance.DatabaseRef
+            .Child(Constants.DatabaseUserKey)
+            .Child(DatabaseManager.Instance.FirebaseUser.UserId)
+            .Child(Constants.DatabaseAvatarKey)
+            .GetValueAsync();
+
+        if (snapshot.Exists)
+        {
+            string avatarId = snapshot.Value.ToString();
+            return int.Parse(avatarId);
+        }
+        else
+        {
+            Debug.LogError("Аватар не найден.");
+            return -1;
+        }
+
+        /*
+        DatabaseManager.Instance.DatabaseRef.Child(Constants.DatabaseUserKey)
+            .Child(DatabaseManager.Instance.FirebaseUser.UserId)
+            .Child(Constants.DatabaseAvatarKey)
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task => {
+
+            if (task.IsCompleted && task.Result.Exists)
+            {
+                string avatarId = task.Result.Value.ToString();
+                int selectedAvatarIndex = int.Parse(avatarId);
+            }
+            else
+            {
+                Debug.LogError("Ошибка при загрузке аватара или аватар не найден");
+            }
+        });*/
     }
 
     /*
