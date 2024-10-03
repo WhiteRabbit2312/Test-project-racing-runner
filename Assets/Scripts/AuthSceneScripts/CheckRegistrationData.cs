@@ -6,6 +6,7 @@ using Firebase.Database;
 using System;
 using System.Text.RegularExpressions;
 using TMPro;
+using System.Threading.Tasks;
 
 public class CheckRegistrationData : MonoBehaviour
 {
@@ -30,33 +31,25 @@ public class CheckRegistrationData : MonoBehaviour
 
     }
 
-    public bool Check()
+    public async Task<bool> Check()
     {
-        Debug.Log("1");
-        DoesNameExist((name) =>
+        bool nameExists = await DoesNameExist();
+        _isNameFound = nameExists;
+
+        if (IsLoginValid(_loginInputField.text)
+            && IsNameNotEmpty(_nameInputField.text)
+            && IsPasswordConfirmed()
+            && IsEnoughSymbols()
+             && _isNameFound)
         {
-            _isNameFound = name;
-
-            if (_isNameFound && IsPasswordConfirmed()
-            && IsLoginValid(_loginInputField.text)
-            && IsEnoughSymbols())
-            {
-                Debug.Log("true");
-                return true;
-            }
-
-            else
-            {
-                Debug.Log("false");
-
-                return false;
-            }
-        });
-
-
-        return false;
-        
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
 
     private bool IsPasswordConfirmed()
     {
@@ -90,11 +83,21 @@ public class CheckRegistrationData : MonoBehaviour
         }
     }
 
+    private bool IsNameNotEmpty(string name)
+    {
+        if (!string.IsNullOrEmpty(name))
+        {
+            return true;
+        }
+        else
+        {
+            _warning.ShowWarning(WarningTypes.EnterName);
+            return false;
+        }
+    }
 
     private bool IsEnoughSymbols()
     {
-        Debug.Log("3");
-
         if (_passwordInputField.text.Length >= Constants.MinPasswordSymbols)
         {
             return true;
@@ -108,58 +111,49 @@ public class CheckRegistrationData : MonoBehaviour
         }
     }
 
-    public void DoesNameExist(Func<bool, bool> onComplete)
+    public Task<bool> DoesNameExist()
     {
-        Debug.Log("4");
-
-        StartCoroutine(DoesNameExistCoroutine(_nameInputField.text, onComplete));
-        Debug.Log("4.1");
-
+        var tcs = new TaskCompletionSource<bool>();
+        StartCoroutine(DoesNameExistCoroutine(_nameInputField.text, (result) =>
+        {
+            tcs.SetResult(result);
+        }));
+        return tcs.Task;
     }
 
-    private IEnumerator DoesNameExistCoroutine(string name, Func<bool, bool> OnComplete)
+
+    private IEnumerator DoesNameExistCoroutine(string name, Action<bool> OnComplete)
     {
-        Debug.Log("p");
-
-        var task = DatabaseManager.Instance.DatabaseRef.Child(Constants.DatabaseUserKey).Child(Constants.DatabaseNameKey).GetValueAsync();
-
-        Debug.Log("q");
+        var task = DatabaseManager.Instance.DatabaseRef.Child(Constants.DatabaseUserKey).GetValueAsync();
 
         yield return new WaitUntil(() => task.IsCompleted);
-
-        Debug.Log("w");
-
 
         if (task.IsFaulted || task.IsCanceled)
         {
             Debug.LogError("Error when getting data");
+            OnComplete?.Invoke(false);
         }
-
         else
         {
             DataSnapshot snapshot = task.Result;
+            bool nameNotFound = true;
+
+            Debug.Log("snapshot.Children: " + snapshot.ChildrenCount);
+
             foreach (var item in snapshot.Children)
             {
-                if (!item.HasChild(Constants.DatabaseNameKey))
+                Debug.Log("item.Child(Constants.DatabaseNameKey).Value: " + item.Child(Constants.DatabaseNameKey).Value);
+                Debug.Log("name: " + name);
+                if (item.HasChild(Constants.DatabaseNameKey) && item.Child(Constants.DatabaseNameKey).Value.ToString() == name)
                 {
-                    Debug.Log("e");
-
-                    continue;
-                }
-                
-                if (item.Child(Constants.DatabaseNameKey).Value.ToString() == name)
-                {
-                    Debug.Log("r");
-
                     _warning.ShowWarning(WarningTypes.NameExist);
-                    OnComplete?.Invoke(true);
-                    yield break;
+                    nameNotFound = false;
+                    break;
                 }
-                
             }
-            Debug.Log("t");
-
-            OnComplete?.Invoke(false);
+            Debug.Log(nameNotFound ? "Name found" : "Name not found");
+            OnComplete?.Invoke(nameNotFound);
         }
     }
+
 }

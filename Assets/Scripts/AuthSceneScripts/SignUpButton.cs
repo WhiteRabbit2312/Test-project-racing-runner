@@ -34,49 +34,56 @@ public class SignUpButton : MonoBehaviour
         Debug.Log("auth: " + auth);
 
         bool confirmed = true;
-        var registerTask = auth.CreateUserWithEmailAndPasswordAsync(_login, _password).ContinueWith(task =>
+
+        var checkTask = _checkRegistrationData.Check(); 
+
+        yield return new WaitUntil(() => checkTask.IsCompleted);
+
+        if (!checkTask.Result)
         {
-            
-
-            if (task.IsCanceled)
-            {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
-                confirmed = false;
-
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                confirmed = false;
-                return;
-            }
-
-            if (!_checkRegistrationData.Check())
-            {
-                confirmed = false;
-
-                Debug.LogError("Did not confirm");
-                return;
-            }
-
-            Firebase.Auth.AuthResult result = task.Result;
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                result.User.DisplayName, result.User.UserId);
-
-        });
-
-        yield return new WaitUntil(predicate: () => registerTask.IsCompleted);
-
-        if (confirmed)
-        {
-            Debug.Log("Confirmed");
-
-            _checkRegistrationData.ConfirmPlayerData();
-            SceneManager.LoadScene(Constants.MainMenuSceneIdx);
-
+            confirmed = false;
         }
+        else
+        {
+            var registerTask = auth.CreateUserWithEmailAndPasswordAsync(_login, _password).ContinueWith(task =>
+            {
+                if (task.IsCanceled)
+                {
+                    Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
+                    confirmed = false;
 
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                    confirmed = false;
+                    return;
+                }
+
+
+                Firebase.Auth.AuthResult result = task.Result;
+                Debug.LogFormat("Firebase user created successfully: {0} ({1})",
+                    result.User.DisplayName, result.User.UserId);
+
+            });
+
+            yield return new WaitUntil(predicate: () => registerTask.IsCompleted);
+
+            if (confirmed)
+            {
+                Debug.Log("Confirmed");
+
+                _checkRegistrationData.ConfirmPlayerData();
+                SceneManager.LoadScene(Constants.MainMenuSceneIdx);
+
+            }
+            else
+            {
+                Debug.LogError("Did not confirm");
+
+            }
+        }
 
     }
 }

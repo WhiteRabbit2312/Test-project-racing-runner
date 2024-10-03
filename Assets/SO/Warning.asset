@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Warning
   m_EditorClassIdentifier: 
   WarningText:
-  - Wrong password!
+  - Wrong login or password
   - Please, enter login
   - Please, enter password
   - Please, confirm password
-  - Please, enterName
+  - Please, enter name
   - Name is already exists
   - Password should be more than 6 symbols
   - Incorrect login

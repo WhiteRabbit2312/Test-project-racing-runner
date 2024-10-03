@@ -7,6 +7,5 @@ public enum WarningTypes
     EnterName = 4,
     NameExist = 5,
     PasswordMoreSymbols = 6,
-    IncorrectLogin = 7
-
+    IncorrectLogin = 7,
 }

@@ -18,6 +18,7 @@ public class WarningPanel : MonoBehaviour//rename
 
     public void ShowWarning(WarningTypes type)
     {
+        Debug.Log("Show warning");
         _warningPanel.SetActive(true);
         _warningText.text = _warningConfig.WarningText[(int)type];
     }
