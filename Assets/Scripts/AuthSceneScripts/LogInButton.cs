@@ -3,43 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Firebase.Auth;
+using Zenject;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
+using Firebase;
 
 public class LogInButton : MonoBehaviour
 {
     [SerializeField] private PlayerProvideData _playerRegistrationData;
     [SerializeField] private WarningPanel _warningPanel;
+
+    [Inject] private RegistrationManager _registrationManager;
+
     private string _login;
     private string _password;
 
     private void Awake()
     {
         Button button = GetComponent<Button>();
-        button.onClick.AddListener(ProvideLogIn);
+        button.onClick.AddListener(async () => await ProvideLogIn());
     }
 
-    private void ProvideLogIn()
+    private async Task ProvideLogIn()
     {
+
         FirebaseAuth auth = RegistrationManager.Instance.Auth;
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
 
-        auth.SignInWithEmailAndPasswordAsync(_login, _password).ContinueWith(task => {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                return;
-            }
-            Firebase.Auth.AuthResult result = task.Result;
-            Debug.LogFormat("User signed in successfully: {0} ({1})",
-                result.User.DisplayName, result.User.UserId);
-        });
+        bool confirm = false;
 
-      
+        try
+        {
+            Firebase.Auth.AuthResult result = await auth.SignInWithEmailAndPasswordAsync(_login, _password);
+            confirm = true;
 
+        }
+        catch (FirebaseException ex)
+        {
+            Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + ex.Message);
+            _warningPanel.ShowWarning(WarningTypes.WrongPassword);
+        }
+
+        if (confirm)
+        {
+            SceneManager.LoadScene(Constants.MainMenuSceneIdx);
+        }
     }
 }

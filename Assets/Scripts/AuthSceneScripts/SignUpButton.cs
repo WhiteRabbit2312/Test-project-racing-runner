@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Firebase.Auth;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class SignUpButton : MonoBehaviour
 {
+    [Inject] private RegistrationManager _registrationManager;
     [SerializeField] private PlayerProvideData _playerRegistrationData;
     [SerializeField] private CheckRegistrationData _checkRegistrationData;
     private string _login;

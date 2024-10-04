@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Firebase.Database;
@@ -7,6 +6,7 @@ using System;
 using System.Text.RegularExpressions;
 using TMPro;
 using System.Threading.Tasks;
+using Zenject;
 
 public class CheckRegistrationData : MonoBehaviour
 {
@@ -15,11 +15,12 @@ public class CheckRegistrationData : MonoBehaviour
     [SerializeField] private TMP_InputField _passwordInputField;
     [SerializeField] private TMP_InputField _confirmPasswordInputField;
 
+    [Space]
     [SerializeField] private Button _registrationButton;
-
     [SerializeField] private WarningPanel _warning;
-
     [SerializeField] private DatabaseInfo _databaseInfo;
+
+    [Inject] private DatabaseManager _databaseManager;
 
     private bool _isNameFound = false;
 
@@ -123,6 +124,7 @@ public class CheckRegistrationData : MonoBehaviour
 
     private IEnumerator DoesNameExistCoroutine(string name, Action<bool> OnComplete)
     {
+        //var task = _databaseManager.DatabaseRef.Child(Constants.DatabaseUserKey).GetValueAsync();
         var task = DatabaseManager.Instance.DatabaseRef.Child(Constants.DatabaseUserKey).GetValueAsync();
 
         yield return new WaitUntil(() => task.IsCompleted);

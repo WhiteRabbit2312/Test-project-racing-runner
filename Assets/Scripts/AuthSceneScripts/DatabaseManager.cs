@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
 using Firebase.Auth;
@@ -9,7 +7,7 @@ public class DatabaseManager : MonoBehaviour
     private static DatabaseManager _instance;
     public static DatabaseManager Instance
     {
-        get { return _instance; }
+        get { return  _instance;  }
     }
 
     private DatabaseReference _databaseRef;
@@ -29,15 +27,14 @@ public class DatabaseManager : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
-
         }
-
         _databaseRef = FirebaseDatabase.DefaultInstance.RootReference;
-        Debug.Log("_databaseRef: " + _databaseRef);
     }
 
     public FirebaseUser CreateUser()
     {
+        
+
         _firebaseUser = FirebaseAuth.DefaultInstance.CurrentUser;
         return _firebaseUser;
     }

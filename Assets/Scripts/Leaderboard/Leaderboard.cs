@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class Leaderboard : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private DatabaseInfo _databaseInfo;
     [SerializeField] private Button _openLeaderboardButton;
     [SerializeField] private Button _closeLeaderboardButton;
+
+    [Inject] private DatabaseManager _databaseManager;
 
     private List<GameObject> _spawnedPlayers = new List<GameObject>();
     private readonly Color _userColorInLeaderboard = new Color(1, 0.93f, 0.05f);
@@ -56,20 +59,6 @@ public class Leaderboard : MonoBehaviour
             }
             place++;
         }
-
-        /*
-        for (int i = 0; i < playersInLeaderboard; i++)
-        {
-            GameObject playerObject = Instantiate(_boardCellTemplate, _spawnPoint);
-            _spawnedPlayers.Add(playerObject);
-
-            TemplateData templateData = playerObject.GetComponent<TemplateData>();
-            if (templateData != null)
-            {
-                templateData.SetData(place, sortedPlayers[i].Name, sortedPlayers[i].Score);
-            }
-            place++;
-        }*/
     }
 
     private void CloseLeaderBoard()
