@@ -55,12 +55,11 @@ public class DatabaseInfo : MonoBehaviour
         return playerDictionary;
     }
 
-    public async Task<string> GetPlayerData(string key)
+    public async Task<string> GetPlayerData(string key, string userId)
     {
-
         var snapshot = await DatabaseManager.Instance.DatabaseRef
             .Child(Constants.DatabaseUserKey)
-            .Child(DatabaseManager.Instance.FirebaseUser.UserId)
+            .Child(userId)
             .Child(key)
             .GetValueAsync();
 

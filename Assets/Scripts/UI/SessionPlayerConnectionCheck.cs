@@ -4,10 +4,12 @@ using UnityEngine;
 using Fusion;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class SessionPlayerConnectionCheck : NetworkBehaviour
 {
     [SerializeField] private GameObject _informPanel;
+    [SerializeField] private DatabaseInfo _databaseInfo;
 
     private void OnEnable()
     {
@@ -29,8 +31,19 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         }
     }
     
-    private void ShowPlayerInformPanel()
+    private async void ShowPlayerInformPanel()
     {
-        GameStarter.Instance.NetworkRunner.Spawn(_informPanel);
+        NetworkObject networkObject = GameStarter.Instance.NetworkRunner.Spawn(_informPanel);
+        string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, DatabaseManager.Instance.FirebaseUser.UserId);
+
+        string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, DatabaseManager.Instance.FirebaseUser.UserId);
+
+        Debug.LogWarning("avatarID: " + avatarID);
+
+        PreGamePlayersInfoPanel panel = networkObject.GetComponent<PreGamePlayersInfoPanel>();
+        int id = int.Parse(avatarID);
+        panel.InitPlayer(name, id);
     }
+
+    
 }

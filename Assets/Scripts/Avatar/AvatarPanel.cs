@@ -26,8 +26,6 @@ public class AvatarPanel : MonoBehaviour
 
         _nameInputField.onValueChanged.AddListener(SetName);
 
-       
-
         GetAvatar();
         GetName();
     }
@@ -39,7 +37,7 @@ public class AvatarPanel : MonoBehaviour
 
     private async void GetAvatar()
     {
-        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey);
+        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, DatabaseManager.Instance.FirebaseUser.UserId);
         int avatarId = int.Parse(value);
 
         _playerAvatar.sprite = _avatarSpriteSO.SpriteAvatar[avatarId];
@@ -47,6 +45,8 @@ public class AvatarPanel : MonoBehaviour
 
     private void SetName(string name)
     {
+
+
         if (!string.IsNullOrEmpty(name))
         {
             _databaseInfo.SetData(Constants.DatabaseNameKey, name);
@@ -56,7 +56,7 @@ public class AvatarPanel : MonoBehaviour
 
     private async void GetName()
     {
-        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey);
+        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, DatabaseManager.Instance.FirebaseUser.UserId);
         _playerText.text = value;
     }
 

@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 4769726040673785220}
   - component: {fileID: 6331367591991836874}
   - component: {fileID: 6705546484390010617}
+  - component: {fileID: 7950619345692721028}
   m_Layer: 5
   m_Name: PlayerInformationCanvas
   m_TagString: Untagged
@@ -329,7 +330,25 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 7950619345692721028}
+--- !u!114 &7950619345692721028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4104744442525052045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5c0b81185f56443bf8bd85949b4dcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image1: {fileID: 2406002268256122525}
+  _image2: {fileID: 76568407498686446}
+  _nick1: {fileID: 3410503613793609540}
+  _nick2: {fileID: 2830764047680790379}
+  _avatarSpriteSO: {fileID: 11400000, guid: 0cf3eb4b7d272444280989be68c101fa, type: 2}
 --- !u!1 &5126050668414711348
 GameObject:
   m_ObjectHideFlags: 0
