@@ -22,8 +22,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         {
             Debug.LogWarning("Есть 2 игрока в сессии");
             ShowPlayerInformPanel();
-
-
         }
         else
         {

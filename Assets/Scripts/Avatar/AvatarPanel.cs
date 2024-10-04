@@ -26,6 +26,8 @@ public class AvatarPanel : MonoBehaviour
 
         _nameInputField.onValueChanged.AddListener(SetName);
 
+       
+
         GetAvatar();
         GetName();
     }

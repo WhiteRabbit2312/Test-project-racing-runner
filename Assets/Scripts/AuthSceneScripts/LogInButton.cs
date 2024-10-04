@@ -47,6 +47,7 @@ public class LogInButton : MonoBehaviour
 
         if (confirm)
         {
+            DatabaseManager.Instance.CreateUser();
             SceneManager.LoadScene(Constants.MainMenuSceneIdx);
         }
     }

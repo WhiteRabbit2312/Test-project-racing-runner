@@ -12,7 +12,7 @@ public class Constants
     public const string DatabaseAvatarKey = "Avatar";
     public const int MinPasswordSymbols = 6;
     public const int MainMenuSceneIdx = 1;
-    public const int PreGameplaySceneIdx = 1;
+    public const int PreGameplaySceneIdx = 2;
     public const int PlayersInLeaderboardCount = 5;
     public const int DefaultValue = -1;
     public const int PlayersInSessionCount = 2;
