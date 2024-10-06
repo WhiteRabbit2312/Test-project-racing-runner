@@ -40,7 +40,7 @@ public class Leaderboard : MonoBehaviour
 
         foreach(var item in sortedPlayers)
         {
-            if (place <= Constants.PlayersInLeaderboardCount || DatabaseManager.Instance.FirebaseUser.UserId == item.Key)
+            if (place <= Constants.PlayersInLeaderboardCount || _databaseManager.FirebaseUser.UserId == item.Key)
             {
                 GameObject playerObject = Instantiate(_boardCellTemplate, _spawnPoint);
                 _spawnedPlayers.Add(playerObject);
@@ -50,7 +50,7 @@ public class Leaderboard : MonoBehaviour
                 {
                     templateData.SetData(place, item.Value.Name, item.Value.Score);
 
-                    if (DatabaseManager.Instance.FirebaseUser.UserId == item.Key)
+                    if (_databaseManager.FirebaseUser.UserId == item.Key)
                     {
                         templateData.SetColor(_userColorInLeaderboard);
                     }

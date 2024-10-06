@@ -14,6 +14,7 @@ public class LogInButton : MonoBehaviour
     [SerializeField] private WarningPanel _warningPanel;
 
     [Inject] private RegistrationManager _registrationManager;
+    [Inject] private DatabaseManager _databaseManager;
 
     private string _login;
     private string _password;
@@ -27,7 +28,7 @@ public class LogInButton : MonoBehaviour
     private async Task ProvideLogIn()
     {
 
-        FirebaseAuth auth = RegistrationManager.Instance.Auth;
+        FirebaseAuth auth = _registrationManager.Auth;
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
 
@@ -47,7 +48,7 @@ public class LogInButton : MonoBehaviour
 
         if (confirm)
         {
-            DatabaseManager.Instance.CreateUser();
+            _databaseManager.CreateUser();
             SceneManager.LoadScene(Constants.MainMenuSceneIdx);
         }
     }

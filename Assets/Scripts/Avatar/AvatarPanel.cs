@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Zenject;
 
 public class AvatarPanel : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class AvatarPanel : MonoBehaviour
     [SerializeField] private Button _openAvatarButton;
     [SerializeField] private Button _closeButton;
 
-    private void Awake()
+    [Inject] private DatabaseManager _databaseManager;
+
+    private void Start()
     {
         _openAvatarButton.onClick.AddListener(OpenPanel);
         _closeButton.onClick.AddListener(GetAvatar);
@@ -37,7 +40,10 @@ public class AvatarPanel : MonoBehaviour
 
     private async void GetAvatar()
     {
-        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, DatabaseManager.Instance.FirebaseUser.UserId);
+        Debug.Log("_databaseManager: " + _databaseManager);
+        Debug.Log("_databaseManager.FirebaseUser: " + DatabaseManager.Instance.FirebaseUser);
+        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, _databaseManager.FirebaseUser.UserId);
+
         int avatarId = int.Parse(value);
 
         _playerAvatar.sprite = _avatarSpriteSO.SpriteAvatar[avatarId];
@@ -56,7 +62,7 @@ public class AvatarPanel : MonoBehaviour
 
     private async void GetName()
     {
-        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, DatabaseManager.Instance.FirebaseUser.UserId);
+        string value = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, _databaseManager.FirebaseUser.UserId);
         _playerText.text = value;
     }
 

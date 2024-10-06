@@ -26,7 +26,7 @@ public class CheckRegistrationData : MonoBehaviour
 
     public void ConfirmPlayerData()
     {
-        DatabaseManager.Instance.CreateUser();
+        _databaseManager.CreateUser();
         _databaseInfo.SetData(Constants.DatabaseNameKey, _nameInputField.text);
         _databaseInfo.SetData(Constants.DatabaseAvatarKey, 0);
         _databaseInfo.SetData(Constants.DatabaseScoreKey, 0);
@@ -125,7 +125,7 @@ public class CheckRegistrationData : MonoBehaviour
     private IEnumerator DoesNameExistCoroutine(string name, Action<bool> OnComplete)
     {
         //var task = _databaseManager.DatabaseRef.Child(Constants.DatabaseUserKey).GetValueAsync();
-        var task = DatabaseManager.Instance.DatabaseRef.Child(Constants.DatabaseUserKey).GetValueAsync();
+        var task = _databaseManager.DatabaseRef.Child(Constants.DatabaseUserKey).GetValueAsync();
 
         yield return new WaitUntil(() => task.IsCompleted);
 

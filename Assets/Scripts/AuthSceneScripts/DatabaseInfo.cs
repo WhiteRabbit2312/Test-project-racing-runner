@@ -13,7 +13,7 @@ public class DatabaseInfo : MonoBehaviour
     {
         DatabaseManager.Instance.DatabaseRef
             .Child(Constants.DatabaseUserKey)
-            .Child(DatabaseManager.Instance.FirebaseUser.UserId)
+            .Child(_databaseManager.FirebaseUser.UserId)
             .Child(key)
             .SetValueAsync(data);
     }
@@ -57,7 +57,7 @@ public class DatabaseInfo : MonoBehaviour
 
     public async Task<string> GetPlayerData(string key, string userId)
     {
-        var snapshot = await DatabaseManager.Instance.DatabaseRef
+        var snapshot = await _databaseManager.DatabaseRef
             .Child(Constants.DatabaseUserKey)
             .Child(userId)
             .Child(key)

@@ -27,7 +27,7 @@ public class SignUpButton : MonoBehaviour
 
     private IEnumerator ProvideSignUpCoroutine()
     {
-        FirebaseAuth auth = RegistrationManager.Instance.Auth;
+        FirebaseAuth auth = _registrationManager.Auth;
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
 
