@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System.Linq;
-using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
 using Zenject;
 
 public class SessionPlayerConnectionCheck : NetworkBehaviour

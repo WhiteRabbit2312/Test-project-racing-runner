@@ -40,8 +40,6 @@ public class AvatarPanel : MonoBehaviour
 
     private async void GetAvatar()
     {
-        Debug.Log("_databaseManager: " + _databaseManager);
-        Debug.Log("_databaseManager.FirebaseUser: " + DatabaseManager.Instance.FirebaseUser);
         string value = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, _databaseManager.FirebaseUser.UserId);
 
         int avatarId = int.Parse(value);
@@ -51,8 +49,6 @@ public class AvatarPanel : MonoBehaviour
 
     private void SetName(string name)
     {
-
-
         if (!string.IsNullOrEmpty(name))
         {
             _databaseInfo.SetData(Constants.DatabaseNameKey, name);

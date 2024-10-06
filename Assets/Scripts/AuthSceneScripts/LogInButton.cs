@@ -27,7 +27,6 @@ public class LogInButton : MonoBehaviour
 
     private async Task ProvideLogIn()
     {
-
         FirebaseAuth auth = _registrationManager.Auth;
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
@@ -48,7 +47,7 @@ public class LogInButton : MonoBehaviour
 
         if (confirm)
         {
-            _databaseManager.CreateUser();
+            _databaseManager.GetUser();
             SceneManager.LoadScene(Constants.MainMenuSceneIdx);
         }
     }

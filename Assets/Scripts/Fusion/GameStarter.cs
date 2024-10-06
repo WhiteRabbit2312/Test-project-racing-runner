@@ -14,6 +14,8 @@ public class GameStarter : MonoBehaviour
     [SerializeField] private NetworkRunner _networkRunnerPrefab; 
     [HideInInspector] public NetworkRunner NetworkRunner;
 
+
+
     public static GameStarter Instance;
 
     private void Awake()

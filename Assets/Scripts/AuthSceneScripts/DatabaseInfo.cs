@@ -11,7 +11,7 @@ public class DatabaseInfo : MonoBehaviour
 
     public void SetData<T>(string key, T data)
     {
-        DatabaseManager.Instance.DatabaseRef
+        _databaseManager.DatabaseRef
             .Child(Constants.DatabaseUserKey)
             .Child(_databaseManager.FirebaseUser.UserId)
             .Child(key)

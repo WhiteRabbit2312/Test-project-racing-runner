@@ -4,13 +4,6 @@ using Firebase.Auth;
 
 public class DatabaseManager : MonoBehaviour
 {
-    
-    private static DatabaseManager _instance;
-    public static DatabaseManager Instance
-    {
-        get { return  _instance;  }
-    }
-    
     private DatabaseReference _databaseRef;
     public DatabaseReference DatabaseRef
     {
@@ -25,19 +18,12 @@ public class DatabaseManager : MonoBehaviour
 
     private void Awake()
     {
-        
-        if (_instance == null)
-        {
-            _instance = this;
-        }
         _databaseRef = FirebaseDatabase.DefaultInstance.RootReference;
 
     }
 
-    public void CreateUser()
+    public void GetUser()
     {
-
-        Debug.Log("Create user");
         _firebaseUser = FirebaseAuth.DefaultInstance.CurrentUser;
     }
 
