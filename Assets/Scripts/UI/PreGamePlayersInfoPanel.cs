@@ -7,10 +7,8 @@ using Fusion;
 
 public class PreGamePlayersInfoPanel : NetworkBehaviour
 {
-    [SerializeField] private Image _image1; 
-    [SerializeField] private Image _image2;
-    [SerializeField] private TextMeshProUGUI _nick1;
-    [SerializeField] private TextMeshProUGUI _nick2;
+    [SerializeField] private Image[] _image; 
+    [SerializeField] private TextMeshProUGUI[] _nick1;
     [SerializeField] private AvatarSpriteSO _avatarSpriteSO;
 
     private void Awake()
@@ -18,10 +16,10 @@ public class PreGamePlayersInfoPanel : NetworkBehaviour
         
     }
 
-    public void InitPlayer(string nick, int id)
+    public void InitPlayer(int playerID, string nick, int id)
     {
-        _image1.sprite = _avatarSpriteSO.SpriteAvatar[id];
-        _nick1.text = nick;
+        _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
+        _nick1[playerID].text = nick;
     }
 
 }

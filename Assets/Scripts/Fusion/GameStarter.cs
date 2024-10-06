@@ -5,18 +5,19 @@ using UnityEngine.UI;
 using Fusion;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using Zenject;
 
-
-public class GameStarter : MonoBehaviour
+public class GameStarter : NetworkBehaviour
 {
     [SerializeField] private Button _startButton;
 
     [SerializeField] private NetworkRunner _networkRunnerPrefab; 
     [HideInInspector] public NetworkRunner NetworkRunner;
 
-
+    [Inject] private DatabaseManager _databaseManager;
 
     public static GameStarter Instance;
+    public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
 
     private void Awake()
     {
@@ -53,6 +54,7 @@ public class GameStarter : MonoBehaviour
 
         if (result.Ok)
         {
+            PlayerUserID.Add(runner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
             LoadPreGameScene();
             Debug.LogWarning("Успешно подключились к сессии!");
         }
@@ -64,6 +66,7 @@ public class GameStarter : MonoBehaviour
 
     private void LoadPreGameScene()
     {
+
         SceneManager.LoadScene(Constants.PreGameplaySceneIdx);
     }
     

@@ -35,15 +35,23 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     private async void ShowPlayerInformPanel()
     {
         NetworkObject networkObject = GameStarter.Instance.NetworkRunner.Spawn(_informPanel);
-        string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, _databaseManager.FirebaseUser.UserId);
 
-        string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, _databaseManager.FirebaseUser.UserId);
+        int idx = 0;
+        foreach(var item in GameStarter.Instance.PlayerUserID)
+        {
+            string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, item.Value);
+            string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, item.Value);
 
-        Debug.LogWarning("avatarID: " + avatarID);
+            PreGamePlayersInfoPanel panel = networkObject.GetComponent<PreGamePlayersInfoPanel>();
+            int id = int.Parse(avatarID);
 
-        PreGamePlayersInfoPanel panel = networkObject.GetComponent<PreGamePlayersInfoPanel>();
-        int id = int.Parse(avatarID);
-        panel.InitPlayer(name, id);
+            panel.InitPlayer(idx, name, id);
+            idx++;
+        }
+
+       
+
+        
     }
 
     

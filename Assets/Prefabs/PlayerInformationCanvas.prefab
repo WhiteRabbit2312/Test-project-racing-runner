@@ -344,10 +344,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e5c0b81185f56443bf8bd85949b4dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image1: {fileID: 2406002268256122525}
-  _image2: {fileID: 76568407498686446}
-  _nick1: {fileID: 3410503613793609540}
-  _nick2: {fileID: 2830764047680790379}
+  _image:
+  - {fileID: 2406002268256122525}
+  - {fileID: 76568407498686446}
+  _nick1:
+  - {fileID: 3410503613793609540}
+  - {fileID: 2830764047680790379}
   _avatarSpriteSO: {fileID: 11400000, guid: 0cf3eb4b7d272444280989be68c101fa, type: 2}
 --- !u!1 &5126050668414711348
 GameObject:
