@@ -21,16 +21,38 @@ public class LogInButton : MonoBehaviour
 
     private void Awake()
     {
+        if (!PlayerPrefs.HasKey(Constants.SilentAuthKey))
+        {
+            PlayerPrefs.SetInt(Constants.SilentAuthKey, Constants.UserLogOutIdx);
+        }
+    }
+
+    private void Start()
+    {
+        CheckAuthentification();
+
         Button button = GetComponent<Button>();
+
         button.onClick.AddListener(async () => await ProvideLogIn());
+    }
+
+    private void CheckAuthentification()
+    {
+        if (PlayerPrefs.GetInt(Constants.SilentAuthKey) == 1) 
+        {
+            Task.Run(async () =>
+            {
+                await ProvideLogIn();
+            });
+        } 
     }
 
     private async Task ProvideLogIn()
     {
-        FirebaseAuth auth = _registrationManager.Auth;
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
 
+        FirebaseAuth auth = _registrationManager.Auth;
         bool confirm = false;
 
         try
@@ -47,8 +69,20 @@ public class LogInButton : MonoBehaviour
 
         if (confirm)
         {
+            
             _databaseManager.GetUser();
+            Debug.LogWarning("Confirm");
             SceneManager.LoadScene(Constants.MainMenuSceneIdx);
+            Debug.LogWarning("Confirm2");
+            SilentAuthentification();
         }
+
+    }
+
+    private void SilentAuthentification()
+    {
+        PlayerPrefs.SetString(Constants.LogInKey, _login);
+        PlayerPrefs.SetString(Constants.PasswordKey, _password);
+        PlayerPrefs.SetInt(Constants.SilentAuthKey, Constants.UserLogInIdx);
     }
 }

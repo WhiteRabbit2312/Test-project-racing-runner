@@ -13,8 +13,17 @@ public class PlayerProvideData : MonoBehaviour
 
     private void Awake()
     {
-        _loginInputField.onValueChanged.AddListener(WritePlayerLogin);
-        _passwordInputField.onValueChanged.AddListener(WritePlayerPassword);
+        if (PlayerPrefs.GetInt(Constants.SilentAuthKey) == 1)
+        {
+            _login = PlayerPrefs.GetString(Constants.LogInKey);
+            _password = PlayerPrefs.GetString(Constants.PasswordKey);
+        }
+
+        else
+        {
+            _loginInputField.onValueChanged.AddListener(WritePlayerLogin);
+            _passwordInputField.onValueChanged.AddListener(WritePlayerPassword);
+        }
     }
 
     public string Login
