@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class GameStarter : NetworkBehaviour
+public class GameStarter : SimulationBehaviour
 {
     [SerializeField] private NetworkRunner _networkRunnerPrefab; 
     [HideInInspector] public NetworkRunner NetworkRunner;
@@ -15,8 +15,8 @@ public class GameStarter : NetworkBehaviour
 
     [HideInInspector] public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
 
-    public static GameStarter Instance;
 
+    /*
     public async void OnStartGameButton()
     {
         if(Instance == null)
@@ -66,10 +66,41 @@ public class GameStarter : NetworkBehaviour
             Debug.LogError($"Ошибка подключения: {result.ShutdownReason}");
         }
     }
+    */
 
-    private void LoadPreGameScene()
+    public void OnStartGameButtonPressed()
     {
-        SceneManager.LoadScene(Constants.PreGameplaySceneIdx);
+        this.MyStartGame(Fusion.GameMode.Shared, Constants.SessionName);
     }
-    
+
+    public async void MyStartGame(GameMode mode, string sessionName)
+    {
+        if (NetworkRunner == null)
+        {
+            NetworkRunner = Instantiate(_networkRunnerPrefab);
+            NetworkRunner.ProvideInput = true;
+        }
+
+        var scene = SceneRef.FromIndex(Constants.PreGameplaySceneIdx);
+        var sceneInfo = new NetworkSceneInfo();
+
+        if (scene.IsValid)
+        {
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        }
+
+        var result = await NetworkRunner.StartGame(new StartGameArgs()
+        {
+            GameMode = mode,
+            CustomLobbyName = Constants.LobbyName,
+            SessionName = sessionName,
+            Scene = scene,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
+
+        if (!result.Ok)
+        {
+            PlayerUserID.Add(NetworkRunner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
+        }
+    }
 }

@@ -10,6 +10,6 @@ public class StartGameButton : MonoBehaviour
     private void Awake()
     {
         Button button = GetComponent<Button>();
-        button.onClick.AddListener(_gameStarter.OnStartGameButton);
+        button.onClick.AddListener(_gameStarter.OnStartGameButtonPressed);
     }
 }

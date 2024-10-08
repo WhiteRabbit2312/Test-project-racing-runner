@@ -24,6 +24,7 @@ public class DesktopInput : IInput
 
         else
         {
+            Debug.LogWarning("Zero");
             return 0f;
         }
     }

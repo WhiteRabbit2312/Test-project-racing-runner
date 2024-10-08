@@ -21,10 +21,11 @@ public class LogInButton : MonoBehaviour
 
     private void Awake()
     {
+        /*
         if (!PlayerPrefs.HasKey(Constants.SilentAuthKey))
         {
             PlayerPrefs.SetInt(Constants.SilentAuthKey, Constants.UserLogOutIdx);
-        }
+        }*/
     }
 
     private void Start()

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5361165119516234084}
   - component: {fileID: 180184245219275855}
   - component: {fileID: 3821645960839995636}
-  - component: {fileID: 7064974090932378690}
+  - component: {fileID: 4511087897346723756}
   m_Layer: 0
   m_Name: Prototype Runner
   m_TagString: Untagged
@@ -115,7 +115,7 @@ MonoBehaviour:
   OnObjectExitAOI:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7064974090932378690
+--- !u!114 &4511087897346723756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

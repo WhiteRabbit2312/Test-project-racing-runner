@@ -13,6 +13,7 @@ public class PlayerProvideData : MonoBehaviour
 
     private void Awake()
     {
+        /*
         if (PlayerPrefs.GetInt(Constants.SilentAuthKey) == 1)
         {
             _login = PlayerPrefs.GetString(Constants.LogInKey);
@@ -20,10 +21,10 @@ public class PlayerProvideData : MonoBehaviour
         }
 
         else
-        {
+        {*/
             _loginInputField.onValueChanged.AddListener(WritePlayerLogin);
             _passwordInputField.onValueChanged.AddListener(WritePlayerPassword);
-        }
+        //}
     }
 
     public string Login

@@ -10,12 +10,12 @@ public class MobileInput : IInput
 
     public float Move()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
             return _leftPos;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
             return _rightPos;
         }

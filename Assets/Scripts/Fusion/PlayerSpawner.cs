@@ -11,6 +11,17 @@ public class PlayerSpawner : NetworkBehaviour
     [Inject] private GameStarter _gameStarter;
     private void Awake()
     {
-        GameStarter.Instance.NetworkRunner.Spawn(_player);
+        if (Runner == null)
+        {
+            Debug.LogWarning("Runner is null");
+        }
     }
+    
+
+    public override void Spawned()
+    {
+        Debug.LogWarning("My spawned");
+        _gameStarter.NetworkRunner.Spawn(_player);
+    }
+
 }
