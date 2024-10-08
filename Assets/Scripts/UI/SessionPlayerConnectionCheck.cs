@@ -31,7 +31,9 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         }
         else
         {
-            SceneManager.LoadScene(Constants.GameplaySceneIdx);
+            //SceneManager.LoadScene(Constants.GameplaySceneIdx);
+            SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
+            runner.LoadScene(scene);
             Debug.LogWarning($"Текущее количество игроков: {count}");
         }
     }
