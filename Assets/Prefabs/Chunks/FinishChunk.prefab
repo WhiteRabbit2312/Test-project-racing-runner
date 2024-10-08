@@ -14,8 +14,7 @@ GameObject:
   - component: {fileID: 7214368613405931226}
   - component: {fileID: 8813997287704918496}
   - component: {fileID: 4059551222786712290}
-  - component: {fileID: 6002694339489271362}
-  - component: {fileID: 3728525062620030509}
+  - component: {fileID: 3925079834558485451}
   m_Layer: 0
   m_Name: FinishChunk
   m_TagString: Untagged
@@ -127,8 +126,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 6002694339489271362}
-  - {fileID: 3728525062620030509}
+  - {fileID: 3925079834558485451}
 --- !u!65 &4059551222786712290
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -150,7 +148,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0, z: 1}
   m_Center: {x: 0, y: -0.5, z: 0}
---- !u!114 &6002694339489271362
+--- !u!114 &3925079834558485451
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,19 +157,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1953234842603801654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35968c55d87381f469c3777b6fa2d962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3728525062620030509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1953234842603801654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73ffc071491c1e249930741061e691f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 66022f6c4e065134c90d62a6565c6db2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8973854129731138491

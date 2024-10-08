@@ -171,8 +171,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 249320911f7489e4dae0b0559968c43d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _brokenCarPrefab: {fileID: 8519544410017626507, guid: 600a4e74711808d4e98fd0128780d634, type: 3}
+  _spilledOilCarPrefab: {fileID: 4842763740524024943, guid: c149d1b6f618a0a4eaeb7f5f62e5ea2b, type: 3}
+  _hatchPrefab: {fileID: 8896741709692932839, guid: f80ec4b555a141049b822901317fda79, type: 3}
+  _nitroPrefab: {fileID: 8756488315287045812, guid: 773de907c8104e443bf9aac763723e4b, type: 3}
+  _emptyPrefab: {fileID: 6930842496756098069, guid: d29a6770ff8313a449049cd90a7df2e1, type: 3}
+  _finishPrefab: {fileID: 8813997287704918496, guid: 01c90524c71575c49ba20196f3231c7e, type: 3}
   _levelLength: 20
-  _obstaclePrefabSO: {fileID: 11400000, guid: 306538953992d1d49aa4f50e8143fa23, type: 2}
 --- !u!4 &102010167
 Transform:
   m_ObjectHideFlags: 0
