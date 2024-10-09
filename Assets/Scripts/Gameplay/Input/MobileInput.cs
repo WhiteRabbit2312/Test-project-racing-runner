@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class MobileInput : IInput
+public class MobileInput //: IInput
 {
-    private readonly float _leftPos = -1;
-    private readonly float _rightPos = 1;
-
-    public float Move()
+    private readonly Vector3 _leftPos = new Vector3(-1, 1, 0);
+    private readonly Vector3 _rightPos = new Vector3(1, 1, 0);
+    /*
+    public Vector3 Move()
     {
         if (Input.GetKey(KeyCode.A))
         {
@@ -22,7 +22,7 @@ public class MobileInput : IInput
 
         else
         {
-            return 0f;
+            return new Vector3(0, 0, 0);
         }
-    }
+    }*/
 }

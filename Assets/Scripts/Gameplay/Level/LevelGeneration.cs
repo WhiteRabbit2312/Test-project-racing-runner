@@ -19,12 +19,14 @@ public class LevelGeneration : NetworkBehaviour
     [Networked] private int Seed { get; set; }
     
     private List<ChunkFactory> _obstaclesList = new List<ChunkFactory>();
+    private ChunkFactory _firstChunk;
     private ChunkFactory _lastChunk;
     private readonly float _step = 6f;
+    private readonly float _startPosition = 0f;
 
     public override void Spawned()
     {
-        
+        _firstChunk = new EmptyChunkFactory(_emptyPrefab);
         _obstaclesList.Add(new EmptyChunkFactory(_emptyPrefab));
         _obstaclesList.Add(new BrokenCarChunkFactory(_brokenCarPrefab));
         _obstaclesList.Add(new HatchChunkFactory(_hatchPrefab));
@@ -40,9 +42,11 @@ public class LevelGeneration : NetworkBehaviour
         Seed = Environment.TickCount;
         System.Random random = new System.Random(Seed);
 
-        for (int i = 0; i < _levelLength; i++)
+        _firstChunk.CreateChunk(_startPosition);
+
+        for (int i = 1; i < _levelLength; i++)
         {
-            int randomNumber = random.Next(0, 6);
+            int randomNumber = random.Next(0, _obstaclesList.Count);
             _obstaclesList[randomNumber].CreateChunk(_step * i);
             Console.WriteLine(randomNumber);
         }

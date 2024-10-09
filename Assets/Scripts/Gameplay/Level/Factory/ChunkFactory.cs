@@ -6,14 +6,14 @@ using Zenject;
 
 public class ChunkFactory : NetworkBehaviour
 {
-    [Inject] private GameStarter _gameStarter;
     protected NetworkObject _prefab;
     public NetworkObject CreateChunk(float obstaclePositionZ)
     {
         Vector3 _obstaclePosition = new Vector3(0, 0, obstaclePositionZ);
-        if (_gameStarter.NetworkRunner != null)
+
+        if (GameStarter.Instance.NetworkRunner != null)
         {
-            NetworkObject prefabToSpawn = _gameStarter.NetworkRunner.Spawn(_prefab, _obstaclePosition);
+            NetworkObject prefabToSpawn = GameStarter.Instance.NetworkRunner.Spawn(_prefab, _obstaclePosition);
             return prefabToSpawn;
         }
 

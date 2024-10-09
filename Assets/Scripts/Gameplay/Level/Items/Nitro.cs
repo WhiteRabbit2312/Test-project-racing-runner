@@ -5,7 +5,7 @@ using UnityEngine;
 public class Nitro : Obstacle
 {
     private readonly float _speedBoost = 10f;
-    public override void EffectOnSpeed(CarController car)
+    public override void EffectOnSpeed(PlayerMovement car)
     {
         car.Speed += _speedBoost;
     }

@@ -14,7 +14,7 @@ public class GameStarter : SimulationBehaviour
     [Inject] private DatabaseManager _databaseManager;
 
     [HideInInspector] public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
-
+    public static GameStarter Instance;
 
     /*
     public async void OnStartGameButton()
@@ -68,6 +68,14 @@ public class GameStarter : SimulationBehaviour
     }
     */
 
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     public void OnStartGameButtonPressed()
     {
         this.MyStartGame(Fusion.GameMode.Shared, Constants.SessionName);
@@ -102,5 +110,7 @@ public class GameStarter : SimulationBehaviour
         {
             PlayerUserID.Add(NetworkRunner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
         }
+
+        
     }
 }
