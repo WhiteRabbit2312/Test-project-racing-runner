@@ -11,11 +11,6 @@ public class PreGamePlayersInfoPanel : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI[] _nick1;
     [SerializeField] private AvatarSpriteSO _avatarSpriteSO;
 
-    private void Awake()
-    {
-        
-    }
-
     public void InitPlayer(int playerID, string nick, int id)
     {
         _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];

@@ -13,7 +13,8 @@ public class GameStarter : SimulationBehaviour
 
     [Inject] private DatabaseManager _databaseManager;
 
-    [HideInInspector] public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
+    [HideInInspector]
+    [Networked] public NetworkDictionary<PlayerRef, string> PlayerUserID => default;
     public static GameStarter Instance;
 
     /*
@@ -89,6 +90,7 @@ public class GameStarter : SimulationBehaviour
             NetworkRunner.ProvideInput = true;
         }
 
+
         var scene = SceneRef.FromIndex(Constants.PreGameplaySceneIdx);
         var sceneInfo = new NetworkSceneInfo();
 
@@ -108,9 +110,9 @@ public class GameStarter : SimulationBehaviour
 
         if (!result.Ok)
         {
-            PlayerUserID.Add(NetworkRunner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
+            Debug.LogError("result is not ok");
+            
         }
 
-        
     }
 }

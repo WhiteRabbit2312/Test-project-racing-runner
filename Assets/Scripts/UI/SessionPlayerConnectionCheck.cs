@@ -13,10 +13,13 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     [SerializeField] private DatabaseInfo _databaseInfo;
 
     [Inject] private GameStarter _gameStarter;
+    [Inject] private DatabaseManager _databaseManager;
 
 
-    private void OnEnable()
+    public override void Spawned()
     {
+        if (Runner.IsServer)
+            GameStarter.Instance.PlayerUserID.Add(GameStarter.Instance.NetworkRunner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
         CheckPlayers(_gameStarter.NetworkRunner);
     }
 
@@ -32,8 +35,8 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         else
         {
             //SceneManager.LoadScene(Constants.GameplaySceneIdx);
-            SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
-            runner.LoadScene(scene);
+            //SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
+            //runner.LoadScene(scene);
             Debug.LogWarning($"Текущее количество игроков: {count}");
         }
     }
@@ -41,43 +44,32 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
     private async void RPC_ShowPlayerInformPanel()
     {
-        if (_informPanel == null)
-        {
-            Debug.LogError("Prefab _informPanel не задан!");
-            return;
-        }
-
+        Debug.LogError("1");
         NetworkObject networkObject = _gameStarter.NetworkRunner.Spawn(_informPanel);
-
-        if (networkObject == null)
-        {
-            Debug.LogError("NetworkObject не был заспавнен!");
-            return;
-        }
+        Debug.LogError("2");
 
         PreGamePlayersInfoPanel panel = networkObject.GetComponent<PreGamePlayersInfoPanel>();
-
-        if (panel == null)
-        {
-            Debug.LogError("Компонент PreGamePlayersInfoPanel не найден на заспавненном объекте!");
-            return;
-        }
+        if (Runner.IsServer)
+            Debug.LogError("3: " + GameStarter.Instance.PlayerUserID.Count);
 
         int idx = 0;
-        foreach(var item in _gameStarter.PlayerUserID)
+        if (Runner.IsServer)
         {
-            string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, item.Value);
-            string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, item.Value);
+            foreach (var item in _gameStarter.PlayerUserID)
+            {
+                string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, item.Value);
+                string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, item.Value);
 
-            if (int.TryParse(avatarID, out int id))
-            {
-                panel.InitPlayer(idx, name, id);
+                if (int.TryParse(avatarID, out int id))
+                {
+                    panel.InitPlayer(idx, name, id);
+                }
+                else
+                {
+                    Debug.LogError("Ошибка парсинга avatarID");
+                }
+                idx++;
             }
-            else
-            {
-                Debug.LogError("Ошибка парсинга avatarID");
-            }
-            idx++;
         }
     }
 

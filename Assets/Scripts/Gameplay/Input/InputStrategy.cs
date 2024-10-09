@@ -6,11 +6,12 @@ public class InputStrategy : MonoBehaviour
 {
     private void Awake()
     {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         IInput input = new DesktopInput();
+        /*
 #else
         Input input = new MobileInput();
-#endif
+#endif*/
         InputHandler movementHandler = GetComponent<InputHandler>();
         movementHandler.Init(input);
     }
