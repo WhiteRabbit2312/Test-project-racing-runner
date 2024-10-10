@@ -12,9 +12,6 @@ public class GameStarter : SimulationBehaviour
     [HideInInspector] public NetworkRunner NetworkRunner;
 
     [Inject] private DatabaseManager _databaseManager;
-
-    [HideInInspector]
-    [Networked] public NetworkDictionary<PlayerRef, string> PlayerUserID => default;
     public static GameStarter Instance;
 
     /*
@@ -84,12 +81,12 @@ public class GameStarter : SimulationBehaviour
 
     public async void MyStartGame(GameMode mode, string sessionName)
     {
+        
         if (NetworkRunner == null)
         {
             NetworkRunner = Instantiate(_networkRunnerPrefab);
             NetworkRunner.ProvideInput = true;
         }
-
 
         var scene = SceneRef.FromIndex(Constants.PreGameplaySceneIdx);
         var sceneInfo = new NetworkSceneInfo();

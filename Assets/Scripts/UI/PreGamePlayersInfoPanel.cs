@@ -8,13 +8,24 @@ using Fusion;
 public class PreGamePlayersInfoPanel : NetworkBehaviour
 {
     [SerializeField] private Image[] _image; 
-    [SerializeField] private TextMeshProUGUI[] _nick1;
+    [SerializeField] private TextMeshProUGUI[] _nick;
     [SerializeField] private AvatarSpriteSO _avatarSpriteSO;
 
-    public void InitPlayer(int playerID, string nick, int id)
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_InitPlayer(int playerID, string nick, string avatarID)
     {
-        _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
-        _nick1[playerID].text = nick;
+        if (int.TryParse(avatarID, out int id))
+        {
+            _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
+            _nick[playerID].text = nick;
+
+            Debug.LogError("nick: " + nick + "avatarID: " + avatarID);
+        }
+
+        else
+        {
+            Debug.LogError("Did not try parse");
+        }
     }
 
 }

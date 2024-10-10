@@ -347,7 +347,7 @@ MonoBehaviour:
   _image:
   - {fileID: 2406002268256122525}
   - {fileID: 76568407498686446}
-  _nick1:
+  _nick:
   - {fileID: 3410503613793609540}
   - {fileID: 2830764047680790379}
   _avatarSpriteSO: {fileID: 11400000, guid: 0cf3eb4b7d272444280989be68c101fa, type: 2}

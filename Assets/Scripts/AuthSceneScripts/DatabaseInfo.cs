@@ -9,6 +9,8 @@ public class DatabaseInfo : MonoBehaviour
 {
     [Inject] private DatabaseManager _databaseManager;
 
+
+
     public void SetData<T>(string key, T data)
     {
         _databaseManager.DatabaseRef
@@ -63,13 +65,17 @@ public class DatabaseInfo : MonoBehaviour
             .Child(key)
             .GetValueAsync();
 
+        //Debug.LogError("key: " + key + "userId: " + userId);
+
         if (snapshot.Exists)
         {
+            Debug.LogError("snapshot exists");
             string data = snapshot.Value.ToString();
             return data;
         }
         else
         {
+            Debug.LogError("NOT EXISTS");
             return null;
         }
     }
