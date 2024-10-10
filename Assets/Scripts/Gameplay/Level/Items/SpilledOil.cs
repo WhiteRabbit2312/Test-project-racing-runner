@@ -9,7 +9,7 @@ public class SpilledOil : Obstacle
 
     public override void EffectOnSpeed(PlayerMovement car)
     {
-        Debug.LogError("SpilledOil");
+        //Debug.LogError("SpilledOil");
 
         float tempSpeed = car.Speed;
         car.Speed *= _slowDownDuration;
