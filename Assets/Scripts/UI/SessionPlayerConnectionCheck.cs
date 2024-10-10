@@ -15,7 +15,7 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     [Inject] private GameStarter _gameStarter;
     [Inject] private DatabaseManager _databaseManager;
 
-    [Networked] private int Idx { get; set; } = 0;
+    private int Idx { get; set; } = 0;
 
     [Networked] private NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
 
@@ -29,27 +29,44 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         
         Debug.LogError("UserID in PlsyerUserID: " + PlayerUserID[Runner.LocalPlayer]);
 
-        CheckPlayers(_gameStarter.NetworkRunner);
+        RPC_CheckPlayers();
     }
 
-    public void CheckPlayers(NetworkRunner runner)
+   [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
+    public void RPC_CheckPlayers()
     {
-        int count = runner.ActivePlayers.Count();
+        int count = _gameStarter.NetworkRunner.ActivePlayers.Count();
 
         if (count == Constants.PlayersInSessionCount)
         {
             Debug.LogWarning("Есть 2 игрока в сессии");
 
-            if(Runner.IsClient)
+            if (Runner.IsClient)
+            {
+                
+                
+
+            }
+
+            if (_gameStarter.NetworkRunner.LocalPlayer == _gameStarter.NetworkRunner.ActivePlayers.First())
+            {
+                Debug.LogError("IS SERVER");
                 RPC_ShowPlayerInformPanel();
 
-            StartCoroutine(LoadGameScene(runner));
+                StartCoroutine(LoadGameScene());
+
+                /*
+                SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
+                _gameStarter.NetworkRunner.LoadScene(scene);*/
+            }
+            else
+            {
+                Debug.LogError("Is not server");
+            }
+
         }
         else
         {
-            //SceneManager.LoadScene(Constants.GameplaySceneIdx);
-            //SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
-            //runner.LoadScene(scene);
             Debug.LogWarning($"Текущее количество игроков: {count}");
         }
     }
@@ -57,9 +74,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
     private async void RPC_ShowPlayerInformPanel()
     {
-
-        //NetworkObject networkObject = _gameStarter.NetworkRunner.Spawn(_informPanel);
-
         _informPanel.gameObject.SetActive(true);
 
         PreGamePlayersInfoPanel panel = _informPanel.GetComponent<PreGamePlayersInfoPanel>();
@@ -81,25 +95,23 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         // Инициализация панели после получения всех данных
         foreach (var result in playerDataResults)
         {
-            Debug.LogError($"name: {result.name} avatarID: {result.avatarID}");
             panel.RPC_InitPlayer(Idx, result.name, result.avatarID);
             Idx++;
         }
+        Idx = 0;
     }
 
     private async Task<(string name, string avatarID)> RPC_GetPlayerDataAsync(string playerID)
     {
         string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, playerID);
-        Debug.LogError("NAME " + name);
-
         string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, playerID);
         return (name, avatarID);
     }
 
-    private IEnumerator LoadGameScene(NetworkRunner runner)
+    private IEnumerator LoadGameScene()
     {
         yield return new WaitForSeconds(5f);
         SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
-        runner.LoadScene(scene);
+        _gameStarter.NetworkRunner.LoadScene(scene);
     }
 }

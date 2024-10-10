@@ -16,6 +16,7 @@ public class PreGamePlayersInfoPanel : NetworkBehaviour
     {
         if (int.TryParse(avatarID, out int id))
         {
+            Debug.LogError("playerID: " + playerID);
             _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
             _nick[playerID].text = nick;
 
