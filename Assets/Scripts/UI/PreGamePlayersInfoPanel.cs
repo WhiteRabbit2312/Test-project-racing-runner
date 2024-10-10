@@ -16,17 +16,13 @@ public class PreGamePlayersInfoPanel : NetworkBehaviour
     {
         if (int.TryParse(avatarID, out int id))
         {
-            Debug.LogError("playerID: " + playerID);
+            //Debug.LogError("playerID: " + playerID);
             _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
             _nick[playerID].text = nick;
 
-            Debug.LogError("nick: " + nick + "avatarID: " + avatarID);
+            //Debug.LogError("nick: " + nick + "avatarID: " + avatarID);
         }
 
-        else
-        {
-            Debug.LogError("Did not try parse");
-        }
     }
 
 }

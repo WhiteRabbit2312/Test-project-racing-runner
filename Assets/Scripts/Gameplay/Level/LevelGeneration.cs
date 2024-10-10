@@ -46,7 +46,7 @@ public class LevelGeneration : NetworkBehaviour
 
         for (int i = 1; i < _levelLength; i++)
         {
-            Debug.LogError("i: " + i);
+            //Debug.LogError("i: " + i);
             int randomNumber = random.Next(0, _obstaclesList.Count);
             _obstaclesList[randomNumber].CreateChunk(_step * i);
             Console.WriteLine(randomNumber);

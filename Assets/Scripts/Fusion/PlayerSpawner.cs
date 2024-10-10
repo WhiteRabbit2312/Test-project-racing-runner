@@ -17,7 +17,9 @@ public class PlayerSpawner : NetworkBehaviour
         Debug.LogWarning("My spawned");
 
         //PlayerRef playerRef = GameStarter.Instance.PlayerUserID.Keys.First();
-        Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetworkRunner.LocalPlayer);
+
+        if(Object.HasInputAuthority)
+            Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetworkRunner.LocalPlayer);
     }
 
 }

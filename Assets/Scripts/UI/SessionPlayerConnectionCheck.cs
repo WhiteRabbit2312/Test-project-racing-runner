@@ -21,13 +21,8 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
     public override void Spawned()
     {
-        Debug.LogError("UserID: " + _databaseManager.FirebaseUser.UserId);
-
-        
         if (Runner.IsClient)
              PlayerUserID.Set(Runner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
-        
-        Debug.LogError("UserID in PlsyerUserID: " + PlayerUserID[Runner.LocalPlayer]);
 
         RPC_CheckPlayers();
     }
@@ -41,34 +36,16 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         {
             Debug.LogWarning("≈сть 2 игрока в сессии");
 
-            if (Runner.IsClient)
-            {
-                
-                
-
-            }
-
             if (_gameStarter.NetworkRunner.LocalPlayer == _gameStarter.NetworkRunner.ActivePlayers.First())
             {
-                Debug.LogError("IS SERVER");
                 RPC_ShowPlayerInformPanel();
 
                 StartCoroutine(LoadGameScene());
-
-                /*
-                SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
-                _gameStarter.NetworkRunner.LoadScene(scene);*/
-            }
-            else
-            {
-                Debug.LogError("Is not server");
             }
 
+
         }
-        else
-        {
-            Debug.LogWarning($"“екущее количество игроков: {count}");
-        }
+
     }
 
     [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
@@ -82,8 +59,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
         foreach (var item in PlayerUserID)
         {
-            // —обираем задачи дл€ получени€ данных каждого игрока
-
             string valyerString = item.Value.ToString();
 
             var playerDataTask = RPC_GetPlayerDataAsync(valyerString);
@@ -92,7 +67,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
         var playerDataResults = await Task.WhenAll(playerDataTasks);
 
-        // »нициализаци€ панели после получени€ всех данных
         foreach (var result in playerDataResults)
         {
             panel.RPC_InitPlayer(Idx, result.name, result.avatarID);
