@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Fusion;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
+using Fusion.Sockets;
+using System;
 
-public class GameStarter : SimulationBehaviour
+public class GameStarter : MonoBehaviour, INetworkRunnerCallbacks
 {
+    [SerializeField] private Button _startButton;
+    [SerializeField] private Button _addButton;
     [SerializeField] private NetworkRunner _networkRunnerPrefab; 
-    [HideInInspector] public NetworkRunner NetworkRunner;
-
+    [HideInInspector] public NetworkRunner NetRunner;
     [Inject] private DatabaseManager _databaseManager;
+
     public static GameStarter Instance;
+    public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
+
 
     /*
     public async void OnStartGameButton()
@@ -72,6 +79,11 @@ public class GameStarter : SimulationBehaviour
         {
             Instance = this;
         }
+
+        Debug.LogError("_databaseManager.FirebaseUser.UserId: " + _databaseManager.FirebaseUser.UserId);
+
+        _startButton.onClick.AddListener(OnStartGameButtonPressed);
+        _addButton.onClick.AddListener(OnAddPlayerButtonPressed);
     }
 
     public void OnStartGameButtonPressed()
@@ -79,15 +91,25 @@ public class GameStarter : SimulationBehaviour
         this.MyStartGame(Fusion.GameMode.Shared, Constants.SessionName);
     }
 
+    public void OnAddPlayerButtonPressed()
+    {
+        this.MyStartGame(Fusion.GameMode.Client, Constants.SessionName);
+    }
+
     public async void MyStartGame(GameMode mode, string sessionName)
     {
-        
-        if (NetworkRunner == null)
+        /*
+        if (NetRunner == null)
         {
-            NetworkRunner = Instantiate(_networkRunnerPrefab);
-            NetworkRunner.ProvideInput = true;
-        }
+            NetRunner = Instantiate(_networkRunnerPrefab);
+            NetRunner.ProvideInput = true;
+        }*/
 
+        if (NetRunner != null)
+            return;
+        Debug.LogError("Net runner added!");
+        NetRunner ??= gameObject.AddComponent<NetworkRunner>();
+        NetRunner.ProvideInput = true;
         var scene = SceneRef.FromIndex(Constants.PreGameplaySceneIdx);
         var sceneInfo = new NetworkSceneInfo();
 
@@ -96,7 +118,7 @@ public class GameStarter : SimulationBehaviour
             sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
         }
 
-        var result = await NetworkRunner.StartGame(new StartGameArgs()
+        var result = await NetRunner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
             CustomLobbyName = Constants.LobbyName,
@@ -111,5 +133,98 @@ public class GameStarter : SimulationBehaviour
             
         }
 
+    }
+
+    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
+    {
+    }
+
+    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
+    {
+    }
+
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        Debug.LogError("OnPlayerJoined");
+
+        //if (!PlayerUserID.ContainsValue(_databaseManager.FirebaseUser.UserId))
+        //{
+            PlayerUserID.Add(player, _databaseManager.FirebaseUser.UserId);
+
+            Debug.LogError("SHOW PLAYERS: " + _databaseManager.FirebaseUser.UserId);
+
+        //}
+
+    }
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+    {
+        
+    }
+
+    public void OnInput(NetworkRunner runner, NetworkInput input)
+    {
+        
+    }
+
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
+    {
+     
+    }
+
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+    {
+       
+    }
+
+    public void OnConnectedToServer(NetworkRunner runner)
+    {
+       
+    }
+
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
+    {
+       
+    }
+
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
+    {
+        
+    }
+
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
+    {
+    }
+
+    public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
+    {
+    }
+
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
+    {
+    }
+
+    public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
+    {
+    }
+
+    public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
+    {
+    }
+
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
+    {
+    }
+
+    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
+    {
+    }
+
+    public void OnSceneLoadDone(NetworkRunner runner)
+    {
+    }
+
+    public void OnSceneLoadStart(NetworkRunner runner)
+    {
     }
 }

@@ -6,20 +6,30 @@ using System.Linq;
 using Zenject;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+using Fusion.Sockets;
+using System;
 
 public class SessionPlayerConnectionCheck : NetworkBehaviour
 {
-    [SerializeField] private NetworkObject _informPanel;
+    [SerializeField] private GameObject _informPanel;
+    [SerializeField] private Image[] _image;
+    [SerializeField] private TextMeshProUGUI[] _nick;
+    [SerializeField] private AvatarSpriteSO _avatarSpriteSO;
+
+    [Space]
     [SerializeField] private DatabaseInfo _databaseInfo;
 
-    [Inject] private GameStarter _gameStarter;
     [Inject] private DatabaseManager _databaseManager;
 
     public static SessionPlayerConnectionCheck Instance;
 
     private int Idx { get; set; } = 0;
+    private readonly float _showPanelDuration = 5f;
 
-    [Networked] public NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
+    //[Networked] public NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
+    //public Dictionary<PlayerRef, NetworkString<_32>> PlayerUserID = new Dictionary<PlayerRef, NetworkString<_32>>();
 
     private void Awake()
     {
@@ -31,93 +41,78 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
     public override void Spawned()
     {
-        if (Runner.IsClient && !PlayerUserID.ContainsKey(Runner.LocalPlayer))
-        {
-            PlayerUserID.Set(Runner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
+        int count = GameStarter.Instance.NetRunner.ActivePlayers.Count();
 
+        Debug.LogError("count1 " + count);
 
-            foreach (var item in PlayerUserID)
-            {
-                Debug.LogError("Data at spawned: KEY: " + item.Key + "VALUE: " + item.Value);
-
-            }
-        }
-
-        
-        RPC_CheckPlayers();
-    }
-
-   //[Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
-    public void RPC_CheckPlayers()
-    {
-        int count = _gameStarter.NetworkRunner.ActivePlayers.Count();
 
         if (count == Constants.PlayersInSessionCount)
         {
-            Debug.LogWarning("Есть 2 игрока в сессии");
+            Debug.LogError("count2 " + count);
+            RPC_CheckPlayers();
+        }
+    }
 
-            foreach (var item in PlayerUserID)
-            {
-                Debug.LogError("Key: " + item.Key + "Value: " + item.Value);
-            }
-            RPC_ShowPlayerInformPanel();
-            if (Runner.LocalPlayer == PlayerUserID.Last().Key)
+    public void RPC_CheckPlayers()
+    {
+        RPC_ShowPlayerInformPanel();
+        Debug.LogWarning("Есть 2 игрока в сессии");
+
+        foreach (var item in GameStarter.Instance.PlayerUserID)
+        {
+            if (item.Key.IsMasterClient)
             {
                 Debug.LogError("Runner local player");
-                
+
 
                 RPC_LoadScene();
             }
-
-
         }
-
     }
+
     private void RPC_LoadScene()
     {
         StartCoroutine(LoadGameScene());
     }
 
-    [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     private async void RPC_ShowPlayerInformPanel()
     {
-        _informPanel.gameObject.SetActive(true);
+        
 
-        PreGamePlayersInfoPanel panel = _informPanel.GetComponent<PreGamePlayersInfoPanel>();
-
-        List<Task<(string name, string avatarID)>> playerDataTasks = new List<Task<(string name, string avatarID)>>();
-
-        foreach (var item in PlayerUserID)
+        Idx = 0;
+        foreach (var result in GameStarter.Instance.PlayerUserID)
         {
-            string valyerString = item.Value.ToString();
+            Debug.LogError("IDX: " + Idx + "result.name: " + result.Key + "result.avatarID: " + result.Value);
 
-            var playerDataTask = RPC_GetPlayerDataAsync(valyerString);
-            playerDataTasks.Add(playerDataTask);
-        }
+            string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, result.Value.ToString());
+            string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, result.Value.ToString());
 
-        var playerDataResults = await Task.WhenAll(playerDataTasks);
-
-        foreach (var result in playerDataResults)
-        { 
-            Debug.LogError("IDX: " + Idx + "result.name: " + result.name + "result.avatarID: " + result.avatarID);
-
-            panel.RPC_InitPlayer(Idx, result.name, result.avatarID);
+            RPC_InitPlayerPanel(Idx, name, avatarID);
             Idx++;
         }
-        Idx = 0;
     }
 
-    private async Task<(string name, string avatarID)> RPC_GetPlayerDataAsync(string playerID)
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_InitPlayerPanel(int playerID, string nick, string avatarID)
     {
-        string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, playerID);
-        string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, playerID);
-        return (name, avatarID);
+        _informPanel.SetActive(true);
+        Debug.LogError("in rpc");
+        if (int.TryParse(avatarID, out int id))
+        {
+            Debug.LogError("playerID: " + playerID + "nick: " + nick + "avatarID: " + avatarID);
+            _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
+            _nick[playerID].text = nick;
+
+        }
+
     }
 
     private IEnumerator LoadGameScene()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(_showPanelDuration);
         SceneRef scene = SceneRef.FromIndex(Constants.GameplaySceneIdx);
-        _gameStarter.NetworkRunner.LoadScene(scene);
+        GameStarter.Instance.NetRunner.LoadScene(scene);
     }
+
 }

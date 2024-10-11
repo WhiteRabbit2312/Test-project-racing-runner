@@ -5,13 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 using Fusion;
 
-public class PreGamePlayersInfoPanel : NetworkBehaviour
+public class PreGamePlayersInfoPanel : MonoBehaviour
 {
     [SerializeField] private Image[] _image; 
     [SerializeField] private TextMeshProUGUI[] _nick;
     [SerializeField] private AvatarSpriteSO _avatarSpriteSO;
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
+    //[Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_InitPlayer(int playerID, string nick, string avatarID)
     {
         if (int.TryParse(avatarID, out int id))

@@ -9,7 +9,6 @@ using System.Linq;
 public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField] private NetworkObject _player;
-    [Inject] private GameStarter _gameStarter;
     private Vector3 _playerStartPosition = new Vector3(0, 1, 0);
 
     public override void Spawned()
@@ -19,7 +18,7 @@ public class PlayerSpawner : NetworkBehaviour
         //PlayerRef playerRef = GameStarter.Instance.PlayerUserID.Keys.First();
 
         if(Object.HasInputAuthority)
-            Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetworkRunner.LocalPlayer);
+            Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetRunner.LocalPlayer);
     }
 
 }
