@@ -5,7 +5,7 @@ using Fusion;
 
 public class HatchChunkFactory : ChunkFactory
 {
-    public HatchChunkFactory(NetworkObject obstacle)
+    public HatchChunkFactory(GameObject obstacle)
     {
         _prefab = obstacle;
     }

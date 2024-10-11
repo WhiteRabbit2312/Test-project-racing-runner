@@ -15,19 +15,39 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     [Inject] private GameStarter _gameStarter;
     [Inject] private DatabaseManager _databaseManager;
 
+    public static SessionPlayerConnectionCheck Instance;
+
     private int Idx { get; set; } = 0;
 
-    [Networked] private NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
+    [Networked] public NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     public override void Spawned()
     {
-        if (Runner.IsClient)
-             PlayerUserID.Set(Runner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
+        if (Runner.IsClient && !PlayerUserID.ContainsKey(Runner.LocalPlayer))
+        {
+            PlayerUserID.Set(Runner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
 
+
+            foreach (var item in PlayerUserID)
+            {
+                Debug.LogError("Data at spawned: KEY: " + item.Key + "VALUE: " + item.Value);
+
+            }
+        }
+
+        
         RPC_CheckPlayers();
     }
 
-   [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
+   //[Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
     public void RPC_CheckPlayers()
     {
         int count = _gameStarter.NetworkRunner.ActivePlayers.Count();
@@ -36,16 +56,26 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         {
             Debug.LogWarning("Есть 2 игрока в сессии");
 
-            if (_gameStarter.NetworkRunner.LocalPlayer == _gameStarter.NetworkRunner.ActivePlayers.First())
+            foreach (var item in PlayerUserID)
             {
-                RPC_ShowPlayerInformPanel();
+                Debug.LogError("Key: " + item.Key + "Value: " + item.Value);
+            }
+            RPC_ShowPlayerInformPanel();
+            if (Runner.LocalPlayer == PlayerUserID.Last().Key)
+            {
+                Debug.LogError("Runner local player");
+                
 
-                StartCoroutine(LoadGameScene());
+                RPC_LoadScene();
             }
 
 
         }
 
+    }
+    private void RPC_LoadScene()
+    {
+        StartCoroutine(LoadGameScene());
     }
 
     [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
@@ -68,7 +98,9 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         var playerDataResults = await Task.WhenAll(playerDataTasks);
 
         foreach (var result in playerDataResults)
-        {
+        { 
+            Debug.LogError("IDX: " + Idx + "result.name: " + result.name + "result.avatarID: " + result.avatarID);
+
             panel.RPC_InitPlayer(Idx, result.name, result.avatarID);
             Idx++;
         }

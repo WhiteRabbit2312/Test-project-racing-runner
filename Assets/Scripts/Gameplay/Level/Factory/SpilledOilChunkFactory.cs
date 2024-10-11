@@ -5,7 +5,7 @@ using Fusion;
 
 public class SpilledOilChunkFactory : ChunkFactory
 {
-    public SpilledOilChunkFactory(NetworkObject obstacle)
+    public SpilledOilChunkFactory(GameObject obstacle)
     {
         _prefab = obstacle;
     }
