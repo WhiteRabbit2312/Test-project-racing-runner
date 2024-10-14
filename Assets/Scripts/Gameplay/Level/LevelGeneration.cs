@@ -20,8 +20,9 @@ public class LevelGeneration : NetworkBehaviour
     [Space]
 
     [SerializeField] private int _levelLength;
-    [Networked] private int Seed { get; set; }
-    
+    [Networked, OnChangedRender( nameof(SetSeed))]
+    public int Seed { get; set; }
+
     private List<ChunkFactory> _obstaclesList = new List<ChunkFactory>();
     private ChunkFactory _firstChunk;
     private ChunkFactory _lastChunk;
@@ -38,18 +39,29 @@ public class LevelGeneration : NetworkBehaviour
         _obstaclesList.Add(new NitroChunkFactory(_nitroPrefab));
         _lastChunk = new FinishChunkFactory(_finishPrefab);
 
-        if (Runner.LocalPlayer == Runner.ActivePlayers.First())
+
+
+        if (Runner.IsServer)
         {
-            Debug.LogError("is local player");
-            Seed = UnityEngine.Random.Range(0, 1000);
+            // “олько владелец состо€ни€ генерирует число
+            Seed = SetSeed();
         }
-        
-        
-     
+
+        else
+        {
+            Debug.LogWarning("Is not server");
+        }
 
         GenerateLevel();
     }
 
+    private int SetSeed()
+    {
+
+        Debug.LogError("is local player");
+        return Seed = UnityEngine.Random.Range(0, 1000);
+
+    }
 
     private void GenerateLevel()
     {

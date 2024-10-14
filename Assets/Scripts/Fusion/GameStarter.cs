@@ -18,7 +18,7 @@ public class GameStarter : MonoBehaviour, INetworkRunnerCallbacks
     [Inject] private DatabaseManager _databaseManager;
 
     public static GameStarter Instance;
-    public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
+    //public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
 
 
     /*
@@ -149,9 +149,16 @@ public class GameStarter : MonoBehaviour, INetworkRunnerCallbacks
 
         //if (!PlayerUserID.ContainsValue(_databaseManager.FirebaseUser.UserId))
         //{
-            PlayerUserID.Add(player, _databaseManager.FirebaseUser.UserId);
+        //PlayerUserID.Add(player, _databaseManager.FirebaseUser.UserId);
 
-            Debug.LogError("SHOW PLAYERS: " + _databaseManager.FirebaseUser.UserId);
+
+
+        //Debug.LogError("Count: " + PlayerUserID.Count);
+        //runner.SetMasterClient(player);
+
+
+
+        //Debug.LogError("SHOW PLAYERS: " + _databaseManager.FirebaseUser.UserId);
 
         //}
 
