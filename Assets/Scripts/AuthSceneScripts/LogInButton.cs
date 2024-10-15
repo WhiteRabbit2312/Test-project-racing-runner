@@ -72,9 +72,7 @@ public class LogInButton : MonoBehaviour
         {
             
             _databaseManager.GetUser();
-            Debug.LogWarning("Confirm");
             SceneManager.LoadScene(Constants.MainMenuSceneIdx);
-            Debug.LogWarning("Confirm2");
             SilentAuthentification();
         }
 

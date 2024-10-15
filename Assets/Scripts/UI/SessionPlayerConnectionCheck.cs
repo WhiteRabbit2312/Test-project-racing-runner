@@ -4,12 +4,8 @@ using UnityEngine;
 using Fusion;
 using System.Linq;
 using Zenject;
-using System.Threading.Tasks;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using Fusion.Sockets;
-using System;
 
 public class SessionPlayerConnectionCheck : NetworkBehaviour
 {
@@ -26,63 +22,47 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     public NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
     private int Idx { get; set; } = 0;
     private readonly float _showPanelDuration = 5f;
-
-
+    private readonly int _firstAddedPlayerId = 1; 
 
     public override void Spawned()
     {
-        RPC_InitPlayers();
+        InitPlayers();
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void RPC_InitPlayers()
+    private void InitPlayers()
     {
         int count = GameStarter.Instance.NetRunner.ActivePlayers.Count();
 
-        Debug.LogError("count1 " + count);
-
-        if (count == 1)
+        if (count == _firstAddedPlayerId)
         {
-            IEnumerable<PlayerRef> player = Runner.ActivePlayers;
-            PlayerRef playerRef1 = player.FirstOrDefault();
-            //Runner.SetMasterClient(playerRef1);
-            Debug.LogError("playerRef1 " + playerRef1);
-
-            PlayerUserID.Set(playerRef1, _databaseManager.FirebaseUser.UserId);
+            SetPlayer();
         }
 
         else if (count == Constants.PlayersInSessionCount)
         {
 
-            IEnumerable<PlayerRef> player = Runner.ActivePlayers;
-            PlayerRef playerRef1 = player.FirstOrDefault();
-            PlayerUserID.Set(playerRef1, _databaseManager.FirebaseUser.UserId);
+            SetPlayer();
 
-            Debug.LogError("playerRef2 " + playerRef1);
-            RPC_CheckPlayers();
+            CheckPlayers();
         }
     }
 
-    public void RPC_CheckPlayers()
+    private void SetPlayer()
+    {
+        IEnumerable<PlayerRef> player = Runner.ActivePlayers;
+        PlayerRef playerRef1 = player.FirstOrDefault();
+        PlayerUserID.Set(playerRef1, _databaseManager.FirebaseUser.UserId);
+    }
+
+    public void CheckPlayers()
     {
         RPC_ShowPlayerInformPanel();
-        Debug.LogWarning("Есть 2 игрока в сессии");
-
         foreach (var item in PlayerUserID)
         {
-            Debug.LogError("GameStarter.Instance.PlayerUserID: " + PlayerUserID.Count);
-            if (item.Key.PlayerId == 1)
+            if (item.Key.PlayerId == _firstAddedPlayerId)
             {
-                Debug.LogError("Runner local player");
-
 
                 RPC_LoadScene();
-            }
-
-            else
-            {
-                
-                Debug.LogWarning("Player is not master: " + item.Key);
             }
         }
     }
@@ -92,14 +72,12 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         StartCoroutine(LoadGameScene());
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
     private async void RPC_ShowPlayerInformPanel()
     {
         Idx = 0;
+
         foreach (var result in PlayerUserID)
         {
-            Debug.LogError("IDX: " + Idx + "result.name: " + result.Key + "result.avatarID: " + result.Value);
-
             string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, result.Value.ToString());
             string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, result.Value.ToString());
 
@@ -113,10 +91,10 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     public void RPC_InitPlayerPanel(int playerID, string nick, string avatarID)
     {
         _informPanel.SetActive(true);
-        Debug.LogError("in rpc");
         if (int.TryParse(avatarID, out int id))
         {
-            Debug.LogError("playerID: " + playerID + "nick: " + nick + "avatarID: " + avatarID);
+
+            Debug.LogError("nick: " + nick);
             _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
             _nick[playerID].text = nick;
 

@@ -18,69 +18,13 @@ public class GameStarter : MonoBehaviour, INetworkRunnerCallbacks
     [Inject] private DatabaseManager _databaseManager;
 
     public static GameStarter Instance;
-    //public Dictionary<PlayerRef, string> PlayerUserID = new Dictionary<PlayerRef, string>();
-
-
-    /*
-    public async void OnStartGameButton()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-
-        if (NetworkRunner == null)
-        {
-            NetworkRunner = Instantiate(_networkRunnerPrefab);
-            NetworkRunner.name = Constants.NetworkRunnerName;
-            NetworkRunner.ProvideInput = true;
-
-            var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-            var sceneInfo = new NetworkSceneInfo();
-            if (scene.IsValid)
-            {
-                sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
-            }
-
-
-            await StartGame(NetworkRunner);
-        }
-        else
-        {
-            Debug.LogWarning("Network runner is null");
-        }
-    }
-
-    private async Task StartGame(NetworkRunner runner)
-    {
-        var result = await runner.StartGame(new StartGameArgs()
-        {
-            GameMode = GameMode.Shared,
-            SessionName = Constants.SessionName,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
-
-        if (result.Ok)
-        {
-            PlayerUserID.Add(runner.LocalPlayer, _databaseManager.FirebaseUser.UserId);
-            LoadPreGameScene();
-            Debug.LogWarning("Успешно подключились к сессии!");
-        }
-        else
-        {
-            Debug.LogError($"Ошибка подключения: {result.ShutdownReason}");
-        }
-    }
-    */
-
+  
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
-
-        Debug.LogError("_databaseManager.FirebaseUser.UserId: " + _databaseManager.FirebaseUser.UserId);
 
         _startButton.onClick.AddListener(OnStartGameButtonPressed);
         _addButton.onClick.AddListener(OnAddPlayerButtonPressed);
@@ -98,16 +42,8 @@ public class GameStarter : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void MyStartGame(GameMode mode, string sessionName)
     {
-        /*
-        if (NetRunner == null)
-        {
-            NetRunner = Instantiate(_networkRunnerPrefab);
-            NetRunner.ProvideInput = true;
-        }*/
-
         if (NetRunner != null)
             return;
-        Debug.LogError("Net runner added!");
         NetRunner ??= gameObject.AddComponent<NetworkRunner>();
         NetRunner.ProvideInput = true;
         var scene = SceneRef.FromIndex(Constants.PreGameplaySceneIdx);
@@ -145,7 +81,7 @@ public class GameStarter : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.LogError("OnPlayerJoined");
+        //Debug.LogError("OnPlayerJoined");
 
         //if (!PlayerUserID.ContainsValue(_databaseManager.FirebaseUser.UserId))
         //{
