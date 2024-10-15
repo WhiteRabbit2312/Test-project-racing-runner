@@ -6,6 +6,7 @@ using Firebase.Auth;
 using UnityEngine.SceneManagement;
 using Zenject;
 
+[RequireComponent(typeof(Button))]
 public class SignUpButton : MonoBehaviour
 {
     [Inject] private RegistrationManager _registrationManager;

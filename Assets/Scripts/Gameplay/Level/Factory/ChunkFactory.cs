@@ -10,13 +10,7 @@ public class ChunkFactory : NetworkBehaviour
     public GameObject CreateChunk(float obstaclePositionZ)
     {
         Vector3 _obstaclePosition = new Vector3(0, 0, obstaclePositionZ);
-
-
-        //NetworkObject prefabToSpawn = GameStarter.Instance.NetworkRunner.Spawn(_prefab, _obstaclePosition);
         GameObject prefabToSpawn = Instantiate(_prefab, _obstaclePosition, Quaternion.identity);
         return prefabToSpawn;
-
-
-
     }
 }

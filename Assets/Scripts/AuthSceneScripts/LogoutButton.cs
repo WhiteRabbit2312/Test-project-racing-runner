@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Zenject;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Button))]
 public class LogoutButton : MonoBehaviour
 {
     [Inject] private RegistrationManager _registrationManager;

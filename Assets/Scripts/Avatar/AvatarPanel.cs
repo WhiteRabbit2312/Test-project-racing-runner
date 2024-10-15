@@ -7,7 +7,6 @@ using Zenject;
 
 public class AvatarPanel : MonoBehaviour
 {
-    [SerializeField] private SavePlayerData _savePlayerData;
     [SerializeField] private TextMeshProUGUI _playerText;
     [SerializeField] private TMP_InputField _nameInputField;
     [SerializeField] private Image _playerAvatar;
@@ -46,13 +45,13 @@ public class AvatarPanel : MonoBehaviour
         int avatarId = int.Parse(value);
 
         _playerAvatar.sprite = _avatarSpriteSO.SpriteAvatar[avatarId];
-        _savePlayerData.AvatarId = avatarId;
     }
 
     private void SetName(string name)
     {
         if (!string.IsNullOrEmpty(name))
         {
+
             _databaseInfo.SetData(Constants.DatabaseNameKey, name);
 
         }
@@ -62,7 +61,6 @@ public class AvatarPanel : MonoBehaviour
     {
         string value = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, _databaseManager.FirebaseUser.UserId);
         _playerText.text = value;
-        _savePlayerData.NickName = value;
     }
 
     private void OpenPanel()

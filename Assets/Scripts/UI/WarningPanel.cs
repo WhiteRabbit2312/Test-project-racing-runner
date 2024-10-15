@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class WarningPanel : MonoBehaviour//rename
+public class WarningPanel : MonoBehaviour
 {
     [SerializeField] private WarningConfig _warningConfig;
     [SerializeField] private TextMeshProUGUI _warningText;
@@ -18,7 +18,6 @@ public class WarningPanel : MonoBehaviour//rename
 
     public void ShowWarning(WarningTypes type)
     {
-        Debug.Log("Show warning");
         _warningPanel.SetActive(true);
         _warningText.text = _warningConfig.WarningText[(int)type];
     }

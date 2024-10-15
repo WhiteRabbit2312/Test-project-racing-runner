@@ -31,15 +31,13 @@ public class LevelGeneration : NetworkBehaviour
 
     public override void Spawned()
     {
-        //_firstChunk = new EmptyChunkFactory(_testGO);
+        _firstChunk = new EmptyChunkFactory(_emptyPrefab);
         _obstaclesList.Add(new EmptyChunkFactory(_emptyPrefab));
         _obstaclesList.Add(new BrokenCarChunkFactory(_brokenCarPrefab));
         _obstaclesList.Add(new HatchChunkFactory(_hatchPrefab));
         _obstaclesList.Add(new SpilledOilChunkFactory(_spilledOilCarPrefab));
         _obstaclesList.Add(new NitroChunkFactory(_nitroPrefab));
         _lastChunk = new FinishChunkFactory(_finishPrefab);
-
-
 
         if (Runner.LocalPlayer.PlayerId == Constants.FirstPlayerID)
         {
@@ -51,10 +49,7 @@ public class LevelGeneration : NetworkBehaviour
 
     private int SetSeed()
     {
-
-        Debug.LogError("is local player");
         return Seed = UnityEngine.Random.Range(0, 1000);
-
     }
 
     private void GenerateLevel()
@@ -64,16 +59,13 @@ public class LevelGeneration : NetworkBehaviour
 
         _textDebug.text = Seed.ToString();
 
-        //_firstChunk.CreateChunk(_startPosition);
+        _firstChunk.CreateChunk(_startPosition);
 
         for (int i = 1; i < _levelLength; i++)
         {
-            //Debug.LogError("i: " + i);
             int randomNumber = random.Next(0, _obstaclesList.Count);
             _obstaclesList[randomNumber].CreateChunk(_step * i);
-            //Vector3 _obstaclePosition = new Vector3(0, 0, _step *i);
-            //Instantiate(_testGO[randomNumber], _obstaclePosition, Quaternion.identity);
         }
-        //_lastChunk.CreateChunk(_step * _levelLength);
+        _lastChunk.CreateChunk(_step * _levelLength);
     }
 }

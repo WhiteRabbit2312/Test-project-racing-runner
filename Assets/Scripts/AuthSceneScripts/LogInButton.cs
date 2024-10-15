@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using Firebase;
 
+[RequireComponent(typeof(Button))]
 public class LogInButton : MonoBehaviour
 {
     [SerializeField] private PlayerProvideData _playerRegistrationData;

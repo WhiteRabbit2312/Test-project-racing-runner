@@ -6,6 +6,9 @@ using Fusion;
 public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] private float _speed;
+    [SerializeField] private float _leftPosX;
+    [SerializeField] private float _rightPosX;
+
 
     public float Speed
     {
@@ -16,10 +19,6 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    [Space]
-
-    [SerializeField] private float _leftPosX;
-    [SerializeField] private float _rightPosX; 
     private float _centerPosX = 0f;
 
     private PlayerPos _playerPos = PlayerPos.Center;
@@ -32,7 +31,6 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (GetInput(out CarInput data))
         {
-            Debug.LogError("GetInput is true");
             if (data.HorizontalDirection.x == _leftPosIdx)
             {
                 Left();
@@ -103,22 +101,11 @@ public class PlayerMovement : NetworkBehaviour
 
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out SpilledOil spilledOil))
+        if (other.TryGetComponent(out Obstacle obstacle))
         {
-            spilledOil.EffectOnSpeed(this);
-        }
-
-        else if (other.TryGetComponent(out BrokenCar brokenCar))
-        {
-            brokenCar.EffectOnSpeed(this);
-        }
-
-        else if (other.TryGetComponent(out Hatch hatch))
-        {
-            hatch.EffectOnSpeed(this);
+            obstacle.EffectOnSpeed(this);
         }
     }
 }
