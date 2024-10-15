@@ -20,7 +20,7 @@ public class LevelGeneration : NetworkBehaviour
     [Space]
 
     [SerializeField] private int _levelLength;
-    [Networked, OnChangedRender( nameof(SetSeed))]
+    [Networked]
     public int Seed { get; set; }
 
     private List<ChunkFactory> _obstaclesList = new List<ChunkFactory>();
@@ -41,15 +41,9 @@ public class LevelGeneration : NetworkBehaviour
 
 
 
-        if (Runner.IsServer)
+        if (Runner.LocalPlayer.PlayerId == Constants.FirstPlayerID)
         {
-            // “олько владелец состо€ни€ генерирует число
             Seed = SetSeed();
-        }
-
-        else
-        {
-            Debug.LogWarning("Is not server");
         }
 
         GenerateLevel();

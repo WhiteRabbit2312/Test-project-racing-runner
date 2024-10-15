@@ -21,7 +21,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     [Networked]
     public NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
     private readonly float _showPanelDuration = 5f;
-    private readonly int _firstAddedPlayerId = 1; 
 
     public override void Spawned()
     {
@@ -32,7 +31,7 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     {
         int count = GameStarter.Instance.NetRunner.ActivePlayers.Count();
 
-        if (count == _firstAddedPlayerId)
+        if (count == Constants.FirstPlayerID)
         {
             SetPlayer();
         }
@@ -58,7 +57,7 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
     private void RPC_LoadScene()
     {
-        if(Runner.LocalPlayer.PlayerId == _firstAddedPlayerId)
+        if(Runner.LocalPlayer.PlayerId == Constants.FirstPlayerID)
             StartCoroutine(LoadGameScene());
     }
 

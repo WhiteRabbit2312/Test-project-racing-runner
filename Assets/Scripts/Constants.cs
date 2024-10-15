@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Constants
 {
@@ -27,6 +24,7 @@ public class Constants
     public const int PlayersInSessionCount = 2;
     public const int UserLogOutIdx = 0;
     public const int UserLogInIdx = 1;
+    public const int FirstPlayerID = 1;
 
 
     public const string LoginPattern = @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
