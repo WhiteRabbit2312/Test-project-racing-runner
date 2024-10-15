@@ -20,7 +20,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
     [Networked]
     public NetworkDictionary<PlayerRef, NetworkString<_32>> PlayerUserID => default;
-    private int Idx { get; set; } = 0;
     private readonly float _showPanelDuration = 5f;
     private readonly int _firstAddedPlayerId = 1; 
 
@@ -43,7 +42,8 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
             SetPlayer();
 
-            CheckPlayers();
+            ShowPlayerInformPanel();
+            RPC_LoadScene();
         }
     }
 
@@ -54,37 +54,26 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         PlayerUserID.Set(playerRef1, _databaseManager.FirebaseUser.UserId);
     }
 
-    public void CheckPlayers()
-    {
-        RPC_ShowPlayerInformPanel();
-        foreach (var item in PlayerUserID)
-        {
-            if (item.Key.PlayerId == _firstAddedPlayerId)
-            {
-
-                RPC_LoadScene();
-            }
-        }
-    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
 
     private void RPC_LoadScene()
     {
-        StartCoroutine(LoadGameScene());
+        if(Runner.LocalPlayer.PlayerId == _firstAddedPlayerId)
+            StartCoroutine(LoadGameScene());
     }
 
-    private async void RPC_ShowPlayerInformPanel()
+    private async void ShowPlayerInformPanel()
     {
-        Idx = 0;
+        int idx = 0;
 
         foreach (var result in PlayerUserID)
         {
             string name = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, result.Value.ToString());
             string avatarID = await _databaseInfo.GetPlayerData(Constants.DatabaseAvatarKey, result.Value.ToString());
 
-            RPC_InitPlayerPanel(Idx, name, avatarID);
-            Idx++;
+            RPC_InitPlayerPanel(idx, name, avatarID);
+            idx++;
         }
-        Idx = 0;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
