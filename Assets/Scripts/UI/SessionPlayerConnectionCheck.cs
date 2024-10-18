@@ -10,7 +10,7 @@ using TMPro;
 public class SessionPlayerConnectionCheck : NetworkBehaviour
 {
     [SerializeField] private GameObject _informPanel;
-    [SerializeField] private Image[] _image;
+    [SerializeField] private Image[] _image;  
     [SerializeField] private TextMeshProUGUI[] _nick;
     [SerializeField] private AvatarSpriteSO _avatarSpriteSO;
 
@@ -24,7 +24,7 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
 
     public override void Spawned()
     {
-        InitPlayers();
+        InitPlayers();  
     }
 
     private void InitPlayers()

@@ -25,6 +25,7 @@ public class Constants
     public const int UserLogOutIdx = 0;
     public const int UserLogInIdx = 1;
     public const int FirstPlayerID = 1;
+    public const int GenerationRange = 1000;
 
 
     public const string LoginPattern = @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"

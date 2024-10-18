@@ -198,50 +198,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &66087381
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 66087383}
-  - component: {fileID: 66087382}
-  m_Layer: 0
-  m_Name: SavePlayerData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &66087382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 66087381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4b99f7581b7f0443a450c1ec92f03bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &66087383
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 66087381}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 530.508, y: 403.2575, z: -0.4435313}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &76402995
 GameObject:
   m_ObjectHideFlags: 0
@@ -3113,7 +3069,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startButton: {fileID: 1680319242}
   _addButton: {fileID: 2052548098}
-  _networkRunnerPrefab: {fileID: 0}
+  _networkRunnerPrefab: {fileID: 180184245219275855, guid: 829f724bf33ca524d84dbfa18af86c32, type: 3}
   NetRunner: {fileID: 0}
 --- !u!4 &1006839996
 Transform:
@@ -4201,7 +4157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbd137586db3a80418d6034647738699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _savePlayerData: {fileID: 66087382}
   _playerText: {fileID: 182968262}
   _nameInputField: {fileID: 2078586458}
   _playerAvatar: {fileID: 1169383267}
@@ -6131,5 +6086,4 @@ SceneRoots:
   - {fileID: 622352239}
   - {fileID: 2041261896}
   - {fileID: 1006839996}
-  - {fileID: 66087383}
   - {fileID: 1466255352}

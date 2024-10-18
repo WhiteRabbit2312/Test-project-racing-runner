@@ -13,7 +13,20 @@ public class InputHandler : NetworkBehaviour
     }
     public override void Spawned()
     {
-        Runner.GetComponent<NetworkEvents>().OnInput.AddListener(OnInputProvide);
+        if (Runner == null)
+        {
+            Debug.LogError("runner is null");
+        }
+
+        NetworkEvents networkEvents = gameObject.AddComponent<NetworkEvents>();
+
+        if (networkEvents == null)
+        {
+            Debug.LogError("Network events is null");
+        }
+
+        if(Runner.IsSharedModeMasterClient)
+            networkEvents.OnInput.AddListener(OnInputProvide);
     }
 
 

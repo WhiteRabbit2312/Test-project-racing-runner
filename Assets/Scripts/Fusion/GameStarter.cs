@@ -38,6 +38,7 @@ public class GameStarter : MonoBehaviour
 
     public async void MyStartGame(GameMode mode, string sessionName)
     {
+
         if (NetRunner != null)
             return;
         NetRunner ??= gameObject.AddComponent<NetworkRunner>();

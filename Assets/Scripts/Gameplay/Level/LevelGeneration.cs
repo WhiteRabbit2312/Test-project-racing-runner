@@ -49,7 +49,7 @@ public class LevelGeneration : NetworkBehaviour
 
     private int SetSeed()
     {
-        return Seed = UnityEngine.Random.Range(0, 1000);
+        return Seed = UnityEngine.Random.Range(0, Constants.GenerationRange);
     }
 
     private void GenerateLevel()
