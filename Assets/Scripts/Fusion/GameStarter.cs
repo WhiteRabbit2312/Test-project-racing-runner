@@ -42,7 +42,11 @@ public class GameStarter : MonoBehaviour
         if (NetRunner != null)
             return;
         NetRunner ??= gameObject.AddComponent<NetworkRunner>();
+        
         NetRunner.ProvideInput = true;
+
+        gameObject.AddComponent<NetworkEvents>();
+
         var scene = SceneRef.FromIndex(Constants.PreGameplaySceneIdx);
         var sceneInfo = new NetworkSceneInfo();
 

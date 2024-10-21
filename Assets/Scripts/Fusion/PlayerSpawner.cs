@@ -35,6 +35,11 @@ public class PlayerSpawner : NetworkBehaviour
 
         if (Runner.IsClient)
             Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetRunner.LocalPlayer);
+
+        else
+        {
+            Debug.LogError("runner is not client");
+        }
     }
 
 }

@@ -81,8 +81,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         _informPanel.SetActive(true);
         if (int.TryParse(avatarID, out int id))
         {
-
-            Debug.LogError("nick: " + nick);
             _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
             _nick[playerID].text = nick;
 

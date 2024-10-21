@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Button))]
 public class LogoutButton : MonoBehaviour
 {
+    [SerializeField] private ScenesSO _scenesSO;
     [Inject] private RegistrationManager _registrationManager;
     
     private void Awake()
@@ -19,9 +20,10 @@ public class LogoutButton : MonoBehaviour
     public void LogOutButton()
     {
         _registrationManager.Auth.SignOut();
-        PlayerPrefs.SetString(Constants.LogInKey, "");
-        PlayerPrefs.SetString(Constants.PasswordKey, "");
-        PlayerPrefs.SetInt(Constants.SilentAuthKey, Constants.UserLogOutIdx);
-        SceneManager.LoadScene(Constants.AuthSceneIdx);
+        PlayerPrefs.DeleteKey(Constants.LogInKey);
+        PlayerPrefs.DeleteKey(Constants.PasswordKey);
+        PlayerPrefs.DeleteKey(Constants.SilentAuthKey);
+
+        SceneManager.LoadScene(_scenesSO.AuthSceneIdx);
     }
 }
