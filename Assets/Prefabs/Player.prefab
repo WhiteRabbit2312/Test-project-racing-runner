@@ -225,9 +225,9 @@ GameObject:
   - component: {fileID: 1979183256082789707}
   - component: {fileID: 2176325153676392516}
   - component: {fileID: 8408854369029238479}
-  - component: {fileID: 2389217388724324919}
-  - component: {fileID: 168907636417445675}
   - component: {fileID: 6864676088783468715}
+  - component: {fileID: 168907636417445675}
+  - component: {fileID: 2389217388724324919}
   - component: {fileID: 1942399322260751036}
   m_Layer: 0
   m_Name: Player
@@ -295,10 +295,10 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 2176325153676392516}
-  - {fileID: 2389217388724324919}
   - {fileID: 6864676088783468715}
+  - {fileID: 2389217388724324919}
   - {fileID: 4364550613950910695}
---- !u!114 &2389217388724324919
+--- !u!114 &6864676088783468715
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -307,12 +307,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5268240839946592755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8910bd96653e3429ff5fb103fadee7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 15
-  _leftPosX: -1.5
-  _rightPosX: 1.5
+  SyncScale: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!54 &168907636417445675
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -340,7 +347,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &6864676088783468715
+--- !u!114 &2389217388724324919
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -349,19 +356,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5268240839946592755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a8910bd96653e3429ff5fb103fadee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 1
-  _interpolationTarget: {fileID: 0}
-  UsePreciseRotation: 0
-  UseRenderSleepThresholds: 1
-  RenderThresholds:
-    UseEnergy: 1
-    Position: 0.01
-    Rotation: 0.01
-    Scale: 0.01
+  _speed: 15
+  _leftPosX: -1.5
+  _rightPosX: 1.5
 --- !u!65 &1942399322260751036
 BoxCollider:
   m_ObjectHideFlags: 0
