@@ -12,6 +12,4 @@ public class Hatch : Obstacle
         car.Speed = zeroSpeed;
         
     }
-
-
 }

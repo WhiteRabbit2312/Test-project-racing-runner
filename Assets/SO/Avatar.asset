@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Avatar
   m_EditorClassIdentifier: 
   SpriteAvatar:
-  - {fileID: 21300000, guid: 984031459567f6d40877b1d6ef5bd0a3, type: 3}
-  - {fileID: 21300000, guid: b1d0df5aa48fd654993a4b2821de537f, type: 3}
-  - {fileID: 21300000, guid: 7daeb9f347f1a544e9234a7bbc995454, type: 3}
+  - {fileID: 21300000, guid: b838b048547099b4c83e5c77e63d6dc7, type: 3}
+  - {fileID: 21300000, guid: 2ffe1488b185dfb40ab9325df5fbd32e, type: 3}
+  - {fileID: 21300000, guid: 6e6b2ac2cc4c0e0458bfdfa0b902cec4, type: 3}

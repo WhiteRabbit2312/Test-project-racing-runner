@@ -179,12 +179,10 @@ MonoBehaviour:
   - {fileID: 8604564742090619007, guid: f80ec4b555a141049b822901317fda79, type: 3}
   - {fileID: 384034526483891499, guid: 773de907c8104e443bf9aac763723e4b, type: 3}
   - {fileID: 1767153692941589690, guid: c149d1b6f618a0a4eaeb7f5f62e5ea2b, type: 3}
-  _brokenCarPrefab: {fileID: 6250427804433438491, guid: 600a4e74711808d4e98fd0128780d634, type: 3}
-  _spilledOilCarPrefab: {fileID: 1767153692941589690, guid: c149d1b6f618a0a4eaeb7f5f62e5ea2b, type: 3}
-  _hatchPrefab: {fileID: 8604564742090619007, guid: f80ec4b555a141049b822901317fda79, type: 3}
-  _nitroPrefab: {fileID: 384034526483891499, guid: 773de907c8104e443bf9aac763723e4b, type: 3}
-  _emptyPrefab: {fileID: 2620784163723538463, guid: d29a6770ff8313a449049cd90a7df2e1, type: 3}
-  _finishPrefab: {fileID: 1953234842603801654, guid: 01c90524c71575c49ba20196f3231c7e, type: 3}
+  _obstacleChunks:
+  - {fileID: 6250427804433438491, guid: 600a4e74711808d4e98fd0128780d634, type: 3}
+  - {fileID: 8604564742090619007, guid: f80ec4b555a141049b822901317fda79, type: 3}
+  - {fileID: 1767153692941589690, guid: c149d1b6f618a0a4eaeb7f5f62e5ea2b, type: 3}
   _levelLength: 20
   _Seed: 0
 --- !u!4 &102010167

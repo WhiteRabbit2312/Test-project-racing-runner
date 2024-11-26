@@ -10,7 +10,7 @@ public class TestAuth : MonoBehaviour
 
     void Start()
     {
-        _loginInput.text = "qq@fire.com";
-        _passwordInput.text = "123123";
+        _loginInput.text = "login2@gmail.com";
+        _passwordInput.text = "121212";
     }
 }

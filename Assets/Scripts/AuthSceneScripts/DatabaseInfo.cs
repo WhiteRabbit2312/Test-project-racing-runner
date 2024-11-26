@@ -30,7 +30,6 @@ public class DatabaseInfo : MonoBehaviour
             .OrderByChild(Constants.DatabaseScoreKey)
             .GetValueAsync();
 
-
         if (task.Exists)
         {
             DataSnapshot snapshot = task;

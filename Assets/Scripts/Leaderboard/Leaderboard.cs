@@ -18,7 +18,7 @@ public class Leaderboard : MonoBehaviour
     [Inject] private DatabaseManager _databaseManager;
 
     private List<GameObject> _spawnedPlayers = new List<GameObject>();
-    private readonly Color _userColorInLeaderboard = new Color(1, 0.93f, 0.05f);
+    private readonly Color _userColorInLeaderboard = new Color(0.9f, 0.3f, 0.38f);
     
 
     private void Awake()

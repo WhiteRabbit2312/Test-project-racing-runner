@@ -10,5 +10,4 @@ public class BrokenCar : Obstacle
         //Debug.LogError("BrokenCar");
         car.Speed *= _slowDownDuration;
     }
-
 }

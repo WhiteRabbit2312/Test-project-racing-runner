@@ -28,7 +28,7 @@ public class GameStarter : MonoBehaviour
 
     public void OnStartGameButtonPressed()
     {
-        this.MyStartGame(Fusion.GameMode.Shared, Constants.SessionName);
+        this.MyStartGame(GameMode.Shared, Constants.SessionName);
     }
 
     public void OnAddPlayerButtonPressed()
@@ -63,7 +63,6 @@ public class GameStarter : MonoBehaviour
         if (!result.Ok)
         {
             Debug.LogError("result is not ok");
-            
         }
 
     }

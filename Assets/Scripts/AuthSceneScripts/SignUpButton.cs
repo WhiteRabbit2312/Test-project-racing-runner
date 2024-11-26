@@ -32,10 +32,6 @@ public class SignUpButton : MonoBehaviour
         _login = _playerRegistrationData.Login;
         _password = _playerRegistrationData.Password;
 
-        Debug.Log("login: " + _login);
-        Debug.Log("password: " + _password);
-        Debug.Log("auth: " + auth);
-
         bool confirmed = true;
 
         var checkTask = _checkRegistrationData.Check(); 
@@ -53,14 +49,11 @@ public class SignUpButton : MonoBehaviour
                 if (task.IsCanceled)
                 {
                     Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
-                    confirmed = false;
-
                     return;
                 }
                 if (task.IsFaulted)
                 {
                     Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                    confirmed = false;
                     return;
                 }
 
@@ -76,7 +69,6 @@ public class SignUpButton : MonoBehaviour
             if (confirmed)
             {
                 Debug.Log("Confirmed");
-
                 _checkRegistrationData.ConfirmPlayerData();
                 SceneManager.LoadScene(Constants.MainMenuSceneIdx);
 
@@ -87,6 +79,5 @@ public class SignUpButton : MonoBehaviour
 
             }
         }
-
     }
 }

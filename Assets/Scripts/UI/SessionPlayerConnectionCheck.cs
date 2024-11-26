@@ -30,12 +30,12 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     private void InitPlayers()
     {
         int count = GameStarter.Instance.NetRunner.ActivePlayers.Count();
-
+        
         if (count == Constants.FirstPlayerID)
         {
             SetPlayer();
         }
-
+        
         else if (count == Constants.PlayersInSessionCount)
         {
 
@@ -53,14 +53,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         PlayerUserID.Set(playerRef1, _databaseManager.FirebaseUser.UserId);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-
-    private void RPC_LoadScene()
-    {
-        if(Runner.LocalPlayer.PlayerId == Constants.FirstPlayerID)
-            StartCoroutine(LoadGameScene());
-    }
-
     private async void ShowPlayerInformPanel()
     {
         int idx = 0;
@@ -76,18 +68,22 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
+
+    private void RPC_LoadScene()
+    {
+        if(Runner.LocalPlayer.PlayerId == Constants.FirstPlayerID)
+            StartCoroutine(LoadGameScene());
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_InitPlayerPanel(int playerID, string nick, string avatarID)
     {
         _informPanel.SetActive(true);
         if (int.TryParse(avatarID, out int id))
         {
-
-            Debug.LogError("nick: " + nick);
             _image[playerID].sprite = _avatarSpriteSO.SpriteAvatar[id];
             _nick[playerID].text = nick;
-
         }
-
     }
 
     private IEnumerator LoadGameScene()

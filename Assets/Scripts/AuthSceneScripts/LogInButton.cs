@@ -20,19 +20,8 @@ public class LogInButton : MonoBehaviour
     private string _login;
     private string _password;
 
-    private void Awake()
-    {
-        /*
-        if (!PlayerPrefs.HasKey(Constants.SilentAuthKey))
-        {
-            PlayerPrefs.SetInt(Constants.SilentAuthKey, Constants.UserLogOutIdx);
-        }*/
-    }
-
     private void Start()
     {
-        CheckAuthentification();
-
         Button button = GetComponent<Button>();
 
         button.onClick.AddListener(async () => await ProvideLogIn());

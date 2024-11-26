@@ -21,5 +21,4 @@ public class SpilledOil : Obstacle
         yield return new WaitForSeconds(_effectDuration);
         car.Speed = speedBeforeEffect;
     }
-
 }
