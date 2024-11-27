@@ -31,7 +31,7 @@ public class LogInButton : MonoBehaviour
 
     private void Start()
     {
-        CheckAuthentification();
+        //CheckAuthentification();
 
         Button button = GetComponent<Button>();
 
