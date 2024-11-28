@@ -11,10 +11,7 @@ GameObject:
   - component: {fileID: 4272172456170420239}
   - component: {fileID: 7824592223660499023}
   - component: {fileID: 3917074448214148657}
-  - component: {fileID: 6671880922550032540}
   - component: {fileID: 4842763740524024943}
-  - component: {fileID: 2567290468897029572}
-  - component: {fileID: 3861167399684068731}
   - component: {fileID: 4162487976981521035}
   m_Layer: 0
   m_Name: SpilledOilChunk
@@ -33,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 0.3, z: 6}
+  m_LocalScale: {x: 23, y: 0.3, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5940530293351694571}
@@ -64,6 +61,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -89,27 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6671880922550032540
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767153692941589690}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.18124375, y: 2.5552227, z: 0.1633117}
-  m_Center: {x: 0.00077836716, y: 2.922613, z: 0.013344149}
 --- !u!114 &4842763740524024943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,32 +106,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 2567290468897029572}
-  - {fileID: 3861167399684068731}
---- !u!114 &2567290468897029572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767153692941589690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6aa6b4a5d25785b42a0462710c09b882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3861167399684068731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767153692941589690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b522fe027c109fa4e8f9a2e518004f8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  - {fileID: 555101225480719130}
 --- !u!65 &4162487976981521035
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -186,6 +140,7 @@ GameObject:
   - component: {fileID: 2240179586009559979}
   - component: {fileID: 3675924404192584918}
   - component: {fileID: 2815047757259637607}
+  - component: {fileID: 555101225480719130}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -202,7 +157,7 @@ Transform:
   m_GameObject: {fileID: 5310264690206030134}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.3999996, z: 0}
+  m_LocalPosition: {x: 0, y: 1.55, z: 0}
   m_LocalScale: {x: 0.16666667, y: 1.1407332, z: 0.16666667}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -233,6 +188,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -273,9 +231,21 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &555101225480719130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5310264690206030134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b522fe027c109fa4e8f9a2e518004f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

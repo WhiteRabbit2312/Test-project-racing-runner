@@ -6,12 +6,6 @@ public class Hatch : Obstacle
 {
     public override void EffectOnSpeed(PlayerMovement car) 
     {
-        //Debug.LogError("Hatch");
-
-        float zeroSpeed = 0;
-        car.Speed = zeroSpeed;
-        
+        car.Health++;
     }
-
-
 }

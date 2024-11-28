@@ -9,13 +9,7 @@ using System.Linq;
 public class LevelGeneration : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textDebug;
-    [SerializeField] private GameObject[] _testGO;
-    [SerializeField] private GameObject _brokenCarPrefab;
-    [SerializeField] private GameObject _spilledOilCarPrefab;
-    [SerializeField] private GameObject _hatchPrefab;
-    [SerializeField] private GameObject _nitroPrefab;
-    [SerializeField] private GameObject _emptyPrefab;
-    [SerializeField] private GameObject _finishPrefab;
+    [SerializeField] private GameObject[] _chunkPrefab;
 
     [Space]
 
@@ -24,20 +18,15 @@ public class LevelGeneration : NetworkBehaviour
     public int Seed { get; set; }
 
     private List<ChunkFactory> _obstaclesList = new List<ChunkFactory>();
-    private ChunkFactory _firstChunk;
-    private ChunkFactory _lastChunk;
     private readonly float _step = 6f;
     private readonly float _startPosition = 0f;
-
+    [Networked] private int PositionIdx { get; set; }
     public override void Spawned()
     {
-        _firstChunk = new EmptyChunkFactory(_emptyPrefab);
-        _obstaclesList.Add(new EmptyChunkFactory(_emptyPrefab));
-        _obstaclesList.Add(new BrokenCarChunkFactory(_brokenCarPrefab));
-        _obstaclesList.Add(new HatchChunkFactory(_hatchPrefab));
-        _obstaclesList.Add(new SpilledOilChunkFactory(_spilledOilCarPrefab));
-        _obstaclesList.Add(new NitroChunkFactory(_nitroPrefab));
-        _lastChunk = new FinishChunkFactory(_finishPrefab);
+        foreach (var chunk in _chunkPrefab)
+        {
+            _obstaclesList.Add(new ChunkFactory(chunk));
+        }
 
         if (Runner.LocalPlayer.PlayerId == Constants.FirstPlayerID)
         {
@@ -54,18 +43,34 @@ public class LevelGeneration : NetworkBehaviour
 
     private void GenerateLevel()
     {
-
         System.Random random = new System.Random(Seed);
 
         _textDebug.text = Seed.ToString();
 
-        _firstChunk.CreateChunk(_startPosition);
-
-        for (int i = 1; i < _levelLength; i++)
+        for (int i = 0; i < _levelLength; i++)
         {
             int randomNumber = random.Next(0, _obstaclesList.Count);
-            _obstaclesList[randomNumber].CreateChunk(_step * i);
+            GameObject chunk = _obstaclesList[randomNumber].CreateChunk(_step * i);
+
+            if(chunk.transform.GetChild(0) != null)
+            {
+                chunk.transform.GetChild(0).position = new Vector3(GenerateXPosition(), 1, chunk.transform.position.z);
+            }
         }
-        _lastChunk.CreateChunk(_step * _levelLength);
+    }
+
+    private float GenerateXPosition()
+    {
+        float x;
+        PositionIdx = UnityEngine.Random.Range(0, 3);
+        switch (PositionIdx)
+        {
+            case 0: x = -1; break;
+            case 1: x = 0; break;
+            default: x = 1; break;
+
+        }
+        return x;
+
     }
 }

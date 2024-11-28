@@ -5,10 +5,19 @@ using Fusion;
 
 public class PlayerMovement : NetworkBehaviour
 {
+    [SerializeField] private float _health;
     [SerializeField] private float _speed;
     [SerializeField] private float _leftPosX;
     [SerializeField] private float _rightPosX;
 
+    public float Health
+    {
+        get { return _health; }
+        set
+        {
+            _health = value;
+        }
+    }
 
     public float Speed
     {
@@ -43,7 +52,7 @@ public class PlayerMovement : NetworkBehaviour
 
         }
 
-        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+        transform.Translate(Vector3.forward * _health * Time.deltaTime);
     }
 
     private void Left()

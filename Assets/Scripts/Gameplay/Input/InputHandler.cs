@@ -27,6 +27,4 @@ public class InputHandler : NetworkBehaviour
         input.Set(data);
 
     }
-
-    
-}
+ }
