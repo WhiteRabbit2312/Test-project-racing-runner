@@ -1,16 +1,18 @@
 using UnityEngine;
+using TMPro;
 
 public class MainWindow : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private TMP_Text _scoreText;
+    [SerializeField] private TextMeshProUGUI _healthText;
+
+    public void ShowScore(int score)
     {
-        
+        _scoreText.text = "Score: " + score.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowHealth(int health)
     {
-        
+        _healthText.text = "Health: " + health.ToString();
     }
 }

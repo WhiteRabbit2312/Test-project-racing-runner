@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,19 @@ using Fusion;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [SerializeField] private float _health;
+    [SerializeField] private MainWindow _mainWindow;
+    
+    [SerializeField] private int _health;
     [SerializeField] private float _speed;
     [SerializeField] private float _leftPosX;
     [SerializeField] private float _rightPosX;
 
-    public float Health
+    [SerializeField] private Vector3 _boxSize;
+    private float _score;
+    private readonly int _scoreAmount = 1;
+    private readonly int _framePerSecond = 60;
+
+    public int Health
     {
         get { return _health; }
         set
@@ -53,8 +61,16 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         transform.Translate(Vector3.forward * _health * Time.deltaTime);
+        CountScore();
+        DetectObstacle();
     }
 
+    private void CountScore()
+    {
+        _score += (_scoreAmount * _speed) / _framePerSecond;
+        _mainWindow.ShowScore((int)_score);
+    }
+    
     private void Left()
     {
         StopCoroutine(ChangePosition());
@@ -109,12 +125,37 @@ public class PlayerMovement : NetworkBehaviour
         }
 
     }
+    
+    private void DetectObstacle()
+    {
+        // Центр куба — позиция текущего объекта
+        Vector3 boxCenter = transform.position;
+
+        // Получение всех объектов в зоне куба
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, _boxSize / 2, Quaternion.identity);
+
+        // Проверка на наличие компонента Obstacle
+        foreach (Collider hitCollider in hitColliders)
+        {
+            if (hitCollider.TryGetComponent(out Obstacle obstacle))
+            {
+                obstacle.EffectOnSpeed(this);
+                _mainWindow.ShowHealth(Health);
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
+        throw new NotImplementedException();
+    }
+    /*
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("on trigger enter");
         if (other.TryGetComponent(out Obstacle obstacle))
         {
-            obstacle.EffectOnSpeed(this);
+            
         }
-    }
+    }*/
 }
