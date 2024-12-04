@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Fusion;
+using Zenject;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -16,8 +18,16 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Vector3 _boxSize;
     private float _score;
     private readonly int _scoreAmount = 1;
-    private readonly int _framePerSecond = 60;
+    private readonly int _framePerSecond = 200;
 
+    private PlayerSpawner _playerSpawner;
+
+    [Inject]
+    private void Construct(PlayerSpawner playerSpawner)
+    {
+        _playerSpawner = playerSpawner;
+    }
+    
     public int Health
     {
         get { return _health; }
@@ -60,7 +70,7 @@ public class PlayerMovement : NetworkBehaviour
 
         }
 
-        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+        transform.Translate(Vector3.forward * _speed);
         CountScore();
         DetectObstacle();
     }
@@ -138,9 +148,27 @@ public class PlayerMovement : NetworkBehaviour
             {
                 obstacle.EffectOnSpeed(this);
                 _mainWindow.ShowHealth(Health);
-                Destroy(obstacle);
+                Destroy(obstacle.gameObject);
                 Debug.LogError("Obstacle detected");
+                HandleCrash();
             }
         }
+    }
+    
+    private void HandleCrash()
+    {
+        DecreaseHealth();
+        if (Health <= 0)
+        {
+            transform.GetComponentInChildren<Camera>().enabled = false;
+            var enemy = _playerSpawner.Players.FirstOrDefault(a => a.Key != Runner.LocalPlayer).Value;
+            enemy.GetComponentInChildren<Camera>().enabled = true;
+
+        }
+    }
+    
+    private void DecreaseHealth()
+    {
+        Health--;
     }
 }

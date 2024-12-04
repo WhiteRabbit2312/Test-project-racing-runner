@@ -40,7 +40,7 @@ public class LevelGeneration : NetworkBehaviour
     {
         return Seed = UnityEngine.Random.Range(0, Constants.GenerationRange);
     }
-/*
+
     private void GenerateLevel()
     {
         System.Random random = new System.Random(Seed);
@@ -57,7 +57,9 @@ public class LevelGeneration : NetworkBehaviour
                 chunk.transform.GetChild(0).position = new Vector3(GenerateXPosition(), 1, chunk.transform.position.z);
             }
         }
-    }*/
+    }
+    
+    /*
     private void GenerateLevel()
     {
         System.Random random = new System.Random(Seed);
@@ -105,7 +107,7 @@ public class LevelGeneration : NetworkBehaviour
         }
 
         return 0; 
-    }
+    }*/
 
     private float GenerateXPosition()
     {
