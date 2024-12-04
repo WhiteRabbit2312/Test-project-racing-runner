@@ -30,13 +30,14 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
     private void InitPlayers()
     {
         int count = GameStarter.Instance.NetRunner.ActivePlayers.Count();
-
+            
         if (count == Constants.FirstPlayerID)
         {
             SetPlayer();
         }
 
         else if (count == Constants.PlayersInSessionCount)
+            //if(count == 1)
         {
 
             SetPlayer();

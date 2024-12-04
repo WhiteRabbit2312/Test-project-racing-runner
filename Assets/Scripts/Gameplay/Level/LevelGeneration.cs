@@ -40,7 +40,7 @@ public class LevelGeneration : NetworkBehaviour
     {
         return Seed = UnityEngine.Random.Range(0, Constants.GenerationRange);
     }
-
+/*
     private void GenerateLevel()
     {
         System.Random random = new System.Random(Seed);
@@ -57,6 +57,54 @@ public class LevelGeneration : NetworkBehaviour
                 chunk.transform.GetChild(0).position = new Vector3(GenerateXPosition(), 1, chunk.transform.position.z);
             }
         }
+    }*/
+    private void GenerateLevel()
+    {
+        System.Random random = new System.Random(Seed);
+
+        _textDebug.text = Seed.ToString();
+
+        // Задаем веса: пустой чанк вес = 5, остальные = 1
+        List<int> weights = new List<int>();
+        for (int i = 0; i < _obstaclesList.Count; i++)
+        {
+            weights.Add(i == 0 ? 5 : 1); // Первый элемент — пустой чанк
+        }
+
+        // Генерация уровня
+        for (int i = 0; i < _levelLength; i++)
+        {
+            int randomIndex = GetWeightedRandomIndex(weights, random);
+            GameObject chunk = _obstaclesList[randomIndex].CreateChunk(_step * i);
+
+            if (chunk.transform.GetChild(0) != null)
+            {
+                chunk.transform.GetChild(0).position = new Vector3(GenerateXPosition(), 1, chunk.transform.position.z);
+                chunk.transform.SetParent(transform);
+            }
+        }
+    }
+
+// Метод для выбора индекса с учетом весов
+    private int GetWeightedRandomIndex(List<int> weights, System.Random random)
+    {
+        int totalWeight = 0;
+        foreach (int weight in weights)
+        {
+            totalWeight += weight;
+        }
+
+        int randomValue = random.Next(0, totalWeight);
+        for (int i = 0; i < weights.Count; i++)
+        {
+            if (randomValue < weights[i])
+            {
+                return i;
+            }
+            randomValue -= weights[i];
+        }
+
+        return 0; 
     }
 
     private float GenerateXPosition()
@@ -65,9 +113,9 @@ public class LevelGeneration : NetworkBehaviour
         PositionIdx = UnityEngine.Random.Range(0, 3);
         switch (PositionIdx)
         {
-            case 0: x = -1; break;
+            case 0: x = -8; break;
             case 1: x = 0; break;
-            default: x = 1; break;
+            default: x = 8; break;
 
         }
         return x;

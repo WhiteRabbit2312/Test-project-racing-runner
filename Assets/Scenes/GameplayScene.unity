@@ -441,6 +441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textDebug: {fileID: 590391137}
   _chunkPrefab:
+  - {fileID: 2620784163723538463, guid: d29a6770ff8313a449049cd90a7df2e1, type: 3}
   - {fileID: 8604564742090619007, guid: f80ec4b555a141049b822901317fda79, type: 3}
   - {fileID: 6250427804433438491, guid: 600a4e74711808d4e98fd0128780d634, type: 3}
   - {fileID: 1767153692941589690, guid: c149d1b6f618a0a4eaeb7f5f62e5ea2b, type: 3}
@@ -960,7 +961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &897159513
 MonoBehaviour:
   m_ObjectHideFlags: 0

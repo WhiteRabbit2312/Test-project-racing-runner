@@ -11,6 +11,8 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private NetworkObject _player;
     private Vector3 _playerStartPosition = new Vector3(0, 2, 0);
 
+    [Networked] 
+    public NetworkDictionary<PlayerRef, NetworkObject> Players => default;
     public override void Spawned()
     {
         Debug.LogWarning("My spawned");
@@ -34,7 +36,11 @@ public class PlayerSpawner : NetworkBehaviour
 
 
         if (Runner.IsClient)
-            Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetRunner.LocalPlayer);
+        {
+            var player = Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetRunner.LocalPlayer);
+            Players.Add(Runner.LocalPlayer, player);
+            Debug.LogError("Players count: " + Players.Count);
+        }
 
         else
         {

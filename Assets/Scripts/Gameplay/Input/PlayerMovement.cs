@@ -60,7 +60,7 @@ public class PlayerMovement : NetworkBehaviour
 
         }
 
-        transform.Translate(Vector3.forward * _health * Time.deltaTime);
+        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
         CountScore();
         DetectObstacle();
     }
@@ -128,34 +128,19 @@ public class PlayerMovement : NetworkBehaviour
     
     private void DetectObstacle()
     {
-        // Центр куба — позиция текущего объекта
         Vector3 boxCenter = transform.position;
-
-        // Получение всех объектов в зоне куба
+        
         Collider[] hitColliders = Physics.OverlapBox(boxCenter, _boxSize / 2, Quaternion.identity);
-
-        // Проверка на наличие компонента Obstacle
+        
         foreach (Collider hitCollider in hitColliders)
         {
             if (hitCollider.TryGetComponent(out Obstacle obstacle))
             {
                 obstacle.EffectOnSpeed(this);
                 _mainWindow.ShowHealth(Health);
+                Destroy(obstacle);
+                Debug.LogError("Obstacle detected");
             }
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        throw new NotImplementedException();
-    }
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("on trigger enter");
-        if (other.TryGetComponent(out Obstacle obstacle))
-        {
-            
-        }
-    }*/
 }
