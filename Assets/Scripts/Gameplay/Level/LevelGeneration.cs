@@ -54,6 +54,7 @@ public class LevelGeneration : NetworkBehaviour
 
             if(chunk.transform.GetChild(0) != null)
             {
+                
                 chunk.transform.GetChild(0).position = new Vector3(GenerateXPosition(), 1, chunk.transform.position.z);
             }
         }
@@ -111,9 +112,10 @@ public class LevelGeneration : NetworkBehaviour
 
     private float GenerateXPosition()
     {
+        System.Random random = new System.Random(Seed);
         float x;
-        PositionIdx = UnityEngine.Random.Range(0, 3);
-        switch (PositionIdx)
+        int randomNumber = random.Next(0, 3);
+        switch (randomNumber)
         {
             case 0: x = -8; break;
             case 1: x = 0; break;

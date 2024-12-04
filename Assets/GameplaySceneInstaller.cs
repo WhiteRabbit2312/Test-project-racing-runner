@@ -6,6 +6,6 @@ public class GameplaySceneInstaller : MonoInstaller
     [SerializeField] private PlayerSpawner _playerSpawner;
     public override void InstallBindings()
     {
-        Container.Bind<PlayerSpawner>().AsSingle();
+        Container.BindInstance(_playerSpawner).AsSingle();
     }
 }

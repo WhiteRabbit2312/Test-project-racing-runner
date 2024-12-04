@@ -161,7 +161,10 @@ public class PlayerMovement : NetworkBehaviour
         if (Health <= 0)
         {
             transform.GetComponentInChildren<Camera>().enabled = false;
-            var enemy = _playerSpawner.Players.FirstOrDefault(a => a.Key != Runner.LocalPlayer).Value;
+            var enemy = PlayerSpawner.Instance.Players.FirstOrDefault(a => a.Key != Runner.LocalPlayer).Value;
+            
+            if(enemy == null) Debug.LogError("enemy not found");
+            if(enemy.GetComponentInChildren<Camera>() == null)Debug.LogError("camera not found");
             enemy.GetComponentInChildren<Camera>().enabled = true;
 
         }

@@ -11,8 +11,18 @@ public class PlayerSpawner : NetworkBehaviour
     [SerializeField] private NetworkObject _player;
     private Vector3 _playerStartPosition = new Vector3(0, 2, 0);
 
+    public static PlayerSpawner Instance;
     [Networked] 
     public NetworkDictionary<PlayerRef, NetworkObject> Players => default;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     public override void Spawned()
     {
         Debug.LogWarning("My spawned");

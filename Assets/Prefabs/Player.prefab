@@ -371,8 +371,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainWindow: {fileID: 9191603460411965118}
-  _health: 10
-  _speed: 0
+  _health: 1
+  _speed: 0.07
   _leftPosX: -8
   _rightPosX: 8
   _boxSize: {x: 5, y: 5, z: 5}
