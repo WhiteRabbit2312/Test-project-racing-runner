@@ -16,17 +16,13 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float _rightPosX;
 
     [SerializeField] private Vector3 _boxSize;
+    
+    public static Action OnPlayerDeath;
+    
     private float _score;
     private readonly int _scoreAmount = 1;
     private readonly int _framePerSecond = 200;
-
-    private PlayerSpawner _playerSpawner;
-
-    [Inject]
-    private void Construct(PlayerSpawner playerSpawner)
-    {
-        _playerSpawner = playerSpawner;
-    }
+    
     
     public int Health
     {
@@ -46,6 +42,16 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    public int Score
+    {
+        get { return (int)_score; }
+    }
+
+    public bool IsAlive
+    {
+        get { return Health > 0; }
+    }
+    
     private float _centerPosX = 0f;
 
     private PlayerPos _playerPos = PlayerPos.Center;
@@ -148,7 +154,7 @@ public class PlayerMovement : NetworkBehaviour
             {
                 obstacle.EffectOnSpeed(this);
                 _mainWindow.ShowHealth(Health);
-                Destroy(obstacle.gameObject);
+                //Destroy(obstacle.gameObject);
                 Debug.LogError("Obstacle detected");
                 HandleCrash();
             }
@@ -157,16 +163,18 @@ public class PlayerMovement : NetworkBehaviour
     
     private void HandleCrash()
     {
+        if (Health <= 0) return;
+        var enemy = PlayerSpawner.Instance.Players.FirstOrDefault(a => a.Key != Runner.LocalPlayer).Value;
+        if(enemy == null) return;
         DecreaseHealth();
         if (Health <= 0)
         {
             transform.GetComponentInChildren<Camera>().enabled = false;
-            var enemy = PlayerSpawner.Instance.Players.FirstOrDefault(a => a.Key != Runner.LocalPlayer).Value;
-            
-            if(enemy == null) Debug.LogError("enemy not found");
+            Debug.LogError("Players Count (PlayerMovement): " + PlayerSpawner.Instance.Players.Count);
             if(enemy.GetComponentInChildren<Camera>() == null)Debug.LogError("camera not found");
             enemy.GetComponentInChildren<Camera>().enabled = true;
-
+            //Runner.Despawn(GetComponent<NetworkObject>());
+            OnPlayerDeath?.Invoke();
         }
     }
     

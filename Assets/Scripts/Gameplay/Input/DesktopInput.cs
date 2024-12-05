@@ -11,13 +11,11 @@ public class DesktopInput : IInput
     {
         if (Input.GetKey(KeyCode.A))
         {
-            Debug.LogError("left");
             return _leftPos;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            Debug.LogError("right");
 
             return _rightPos;
         }

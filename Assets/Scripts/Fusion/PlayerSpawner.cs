@@ -12,8 +12,13 @@ public class PlayerSpawner : NetworkBehaviour
     private Vector3 _playerStartPosition = new Vector3(0, 2, 0);
 
     public static PlayerSpawner Instance;
-    [Networked] 
+    [Networked, OnChangedRender(nameof(DebugCount))] 
     public NetworkDictionary<PlayerRef, NetworkObject> Players => default;
+
+    private void DebugCount()
+    {
+        Debug.LogError("Players Count (PlayerSpawner): " + Players.Count);
+    }
 
     private void Awake()
     {
@@ -48,14 +53,20 @@ public class PlayerSpawner : NetworkBehaviour
         if (Runner.IsClient)
         {
             var player = Runner.Spawn(_player, _playerStartPosition, Quaternion.identity, GameStarter.Instance.NetRunner.LocalPlayer);
-            Players.Add(Runner.LocalPlayer, player);
-            Debug.LogError("Players count: " + Players.Count);
+            Rpc_AddPlayer(Runner.LocalPlayer, player);
         }
 
         else
         {
             Debug.LogError("runner is not client");
         }
+    }
+
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, InvokeLocal = true)]
+    private void Rpc_AddPlayer(PlayerRef playerRef, NetworkObject networkObject)
+    {
+        Players.Add(playerRef, networkObject);
     }
 
 }

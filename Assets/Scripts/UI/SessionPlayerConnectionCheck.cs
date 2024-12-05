@@ -37,7 +37,6 @@ public class SessionPlayerConnectionCheck : NetworkBehaviour
         }
 
         else if (count == Constants.PlayersInSessionCount)
-            //if(count == 1)
         {
 
             SetPlayer();
