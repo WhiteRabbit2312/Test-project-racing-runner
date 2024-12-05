@@ -174,4 +174,9 @@ public class PlayerMovement : NetworkBehaviour
     {
         Health--;
     }
+
+    private void SetScore()
+    {
+        
+    }
 }
