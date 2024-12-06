@@ -21,7 +21,7 @@ public class PlayerMovement : NetworkBehaviour
     
     private float _score;
     private readonly int _scoreAmount = 1;
-    private readonly int _framePerSecond = 200;
+    private readonly int _framePerSecond = 60;
     
     
     public int Health
@@ -60,6 +60,11 @@ public class PlayerMovement : NetworkBehaviour
     private readonly int _rightPosIdx = 1;
     private readonly float _turnSpeed = 10f;
 
+    public override void Spawned()
+    {
+        _mainWindow.ShowHealth(Health);
+    }
+
     public override void FixedUpdateNetwork()
     {
         if (GetInput(out CarInput data))
@@ -77,13 +82,17 @@ public class PlayerMovement : NetworkBehaviour
         }
 
         transform.Translate(Vector3.forward * _speed);
-        CountScore();
+        if (Health > 0)
+        {
+            CountScore();
+        }
+        
         DetectObstacle();
     }
 
     private void CountScore()
     {
-        _score += (_scoreAmount * _speed) / _framePerSecond;
+        _score += (_scoreAmount * _speed);
         _mainWindow.ShowScore((int)_score);
     }
     
@@ -154,33 +163,34 @@ public class PlayerMovement : NetworkBehaviour
             {
                 obstacle.EffectOnSpeed(this);
                 _mainWindow.ShowHealth(Health);
-                //Destroy(obstacle.gameObject);
+                Destroy(obstacle.gameObject);
                 Debug.LogError("Obstacle detected");
-                HandleCrash();
+                
+                if(hitCollider.TryGetComponent(out BrokenCar brokenCar))
+                    HandleCrash();
             }
         }
     }
     
     private void HandleCrash()
     {
-        if (Health <= 0) return;
         var enemy = PlayerSpawner.Instance.Players.FirstOrDefault(a => a.Key != Runner.LocalPlayer).Value;
-        if(enemy == null) return;
         DecreaseHealth();
         if (Health <= 0)
         {
             transform.GetComponentInChildren<Camera>().enabled = false;
             Debug.LogError("Players Count (PlayerMovement): " + PlayerSpawner.Instance.Players.Count);
-            if(enemy.GetComponentInChildren<Camera>() == null)Debug.LogError("camera not found");
             enemy.GetComponentInChildren<Camera>().enabled = true;
-            //Runner.Despawn(GetComponent<NetworkObject>());
             OnPlayerDeath?.Invoke();
+
+            transform.GetChild(2).gameObject.SetActive(false);
         }
     }
     
     private void DecreaseHealth()
     {
-        Health--;
+        if(Health > 0)
+            Health--;
     }
 
     private void SetScore()

@@ -47,16 +47,21 @@ public class LevelGeneration : NetworkBehaviour
 
         _textDebug.text = Seed.ToString();
 
-        for (int i = 0; i < _levelLength; i++)
+        for (int i = 0; i < 10; i++)
+        {
+            _obstaclesList[0].CreateChunk(_step * i);
+        }
+        
+        for (int i = 10; i < _levelLength; i++)
         {
             int randomNumber = random.Next(0, _obstaclesList.Count);
             GameObject chunk = _obstaclesList[randomNumber].CreateChunk(_step * i);
 
-            if(chunk.transform.GetChild(0) != null)
-            {
-                chunk.transform.GetChild(0).position = new Vector3(GenerateXPosition(), 1, chunk.transform.position.z);
-                chunk.transform.SetParent(transform);
-            }
+            //if(chunk.transform.GetChild(0) != null)
+            //{
+                //chunk.transform.GetChild(0).position = new Vector3(GenerateXPosition(), 1, chunk.transform.position.z);
+                //chunk.transform.SetParent(transform);
+            //}
         }
     }
     

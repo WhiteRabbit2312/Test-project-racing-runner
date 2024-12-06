@@ -3,11 +3,12 @@ using TMPro;
 
 public class MainWindow : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _scoreText;
+    [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _healthText;
 
     public void ShowScore(int score)
     {
+        Debug.LogError($"Score: {score}");
         _scoreText.text = "Score: " + score.ToString();
     }
 

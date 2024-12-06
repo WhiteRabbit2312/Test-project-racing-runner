@@ -10,6 +10,8 @@ public class FinalWindow : NetworkBehaviour
     [SerializeField] private GameObject _panel;
     [Inject] private DatabaseInfo _playerData;
 
+    [Networked] private int Score { get; set; }
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ShowResults()
     {
@@ -19,11 +21,11 @@ public class FinalWindow : NetworkBehaviour
         foreach (var item in PlayerSpawner.Instance.Players)
         {
             NetworkObject player = item.Value;
-            int score = player.GetComponent<PlayerMovement>().Score;
-            _scoreText[counter].text = score.ToString();
+            Score = player.GetComponent<PlayerMovement>().Score;
+            _scoreText[counter].text = Score.ToString();
             counter++;
             
-            _playerData.SetData(Constants.DatabaseScoreKey, score);
+            _playerData.SetData(Constants.DatabaseScoreKey, Score);
         }
         
     }
