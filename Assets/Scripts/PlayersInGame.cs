@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Fusion;
 using UnityEngine;
 
@@ -15,34 +16,22 @@ public class PlayersInGame : NetworkBehaviour
 
     private void AddPlayerDeath()
     {
-        Rpc_AddPlayerDeath();
+        Debug.LogError("AddPlayerDeath");
+        string playerName = PlayerPrefs.GetString(Constants.DatabaseNameKey);
+        int score = PlayerSpawner.Instance.Players.FirstOrDefault(a => a.Key == Runner.LocalPlayer).Value.GetComponent<PlayerMovement>().Score;
+        Rpc_AddPlayerDeath(playerName, score);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority, InvokeLocal = true)]
-    private void Rpc_AddPlayerDeath()
+    private void Rpc_AddPlayerDeath(string playerName, int score)
     {
         _destroyedPlayers++;
         Debug.LogError("Destroyed players: " + _destroyedPlayers);
+        _finalWindow.AddPlayerData(playerName, score);
         if (_destroyedPlayers == 2)
         {
             _finalWindow.RPC_ShowResults();
         }  
     }
     
-    private void CheckPlayers()
-    {
-        int count = 0;
-        foreach (var item in PlayerSpawner.Instance.Players)
-        {
-            if (item.Value.GetComponent<PlayerMovement>().IsAlive)
-            {
-                count++;
-            }
-        }
-
-        if (count == 2)
-        {
-            _finalWindow.RPC_ShowResults();
-        }
-    }
 }

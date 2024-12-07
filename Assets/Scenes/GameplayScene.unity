@@ -608,6 +608,9 @@ MonoBehaviour:
   _scoreText:
   - {fileID: 1513633402}
   - {fileID: 1806812412}
+  _nameText:
+  - {fileID: 1366368557}
+  - {fileID: 1256510936}
   _panel: {fileID: 791246056}
 --- !u!1 &402341629
 GameObject:

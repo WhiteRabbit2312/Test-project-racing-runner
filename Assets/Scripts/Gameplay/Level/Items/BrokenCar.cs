@@ -6,7 +6,7 @@ public class BrokenCar : Obstacle
 {
     public override void EffectOnSpeed(PlayerMovement car)
     {
-        if(car.Health > 0)
-            car.Health--;
+        //if(car.Health > 0)
+           // car.Health--;
     }
 }

@@ -105,7 +105,7 @@ public class PlayerMovement : NetworkBehaviour
             StartCoroutine(ChangePosition(_leftPosX));
 
             _playerPos = PlayerPos.Left;
-            Debug.LogError("_leftPosX");
+            //Debug.LogError("_leftPosX");
 
         }
 
@@ -113,7 +113,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             StartCoroutine(ChangePosition(_centerPosX));
             _playerPos = PlayerPos.Center;
-            Debug.LogError("_centerPosX");
+            //Debug.LogError("_centerPosX");
 
         }
     }
@@ -164,7 +164,7 @@ public class PlayerMovement : NetworkBehaviour
                 obstacle.EffectOnSpeed(this);
                 _mainWindow.ShowHealth(Health);
                 Destroy(obstacle.gameObject);
-                Debug.LogError("Obstacle detected");
+                //Debug.LogError("Obstacle detected");
                 
                 if(hitCollider.TryGetComponent(out BrokenCar brokenCar))
                     HandleCrash();
@@ -174,23 +174,30 @@ public class PlayerMovement : NetworkBehaviour
     
     private void HandleCrash()
     {
+        if (!IsAlive) return;
         var enemy = PlayerSpawner.Instance.Players.FirstOrDefault(a => a.Key != Runner.LocalPlayer).Value;
         DecreaseHealth();
         if (Health <= 0)
         {
             transform.GetComponentInChildren<Camera>().enabled = false;
-            Debug.LogError("Players Count (PlayerMovement): " + PlayerSpawner.Instance.Players.Count);
-            enemy.GetComponentInChildren<Camera>().enabled = true;
+            if (enemy != null)
+            {
+                enemy.GetComponentInChildren<Camera>().enabled = true;
+            }
+            Debug.LogError("Health: " + Health);
             OnPlayerDeath?.Invoke();
-
-            transform.GetChild(2).gameObject.SetActive(false);
+            Object.enabled = false;
+            //Runner.Despawn(Object);
         }
     }
     
     private void DecreaseHealth()
     {
-        if(Health > 0)
+        if (Health > 0)
+        {
             Health--;
+            Debug.LogError("Health now: " + Health);
+        }
     }
 
     private void SetScore()

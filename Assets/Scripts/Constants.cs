@@ -14,6 +14,7 @@ public class Constants
     public const string LobbyName = "LobbyName";
     public const string SilentAuthKey = "Silent";
 
+
     public const int MinPasswordSymbols = 6;
     public const int AuthSceneIdx = 0;
     public const int MainMenuSceneIdx = 1;

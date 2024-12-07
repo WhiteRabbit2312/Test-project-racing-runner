@@ -17,6 +17,7 @@ public class AvatarPanel : MonoBehaviour
     [SerializeField] private GameObject _canvasAvatar;
     [SerializeField] private Button _openAvatarButton;
     [SerializeField] private Button _closeButton;
+    
 
     [Inject] private DatabaseManager _databaseManager;
 
@@ -60,7 +61,9 @@ public class AvatarPanel : MonoBehaviour
     private async void GetName()
     {
         string value = await _databaseInfo.GetPlayerData(Constants.DatabaseNameKey, _databaseManager.FirebaseUser.UserId);
+        PlayerPrefs.SetString(Constants.DatabaseNameKey, value);
         _playerText.text = value;
+        
     }
 
     private void OpenPanel()

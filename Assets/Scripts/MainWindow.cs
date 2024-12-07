@@ -8,7 +8,7 @@ public class MainWindow : MonoBehaviour
 
     public void ShowScore(int score)
     {
-        Debug.LogError($"Score: {score}");
+        //Debug.LogError($"Score: {score}");
         _scoreText.text = "Score: " + score.ToString();
     }
 
